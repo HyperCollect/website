@@ -32,13 +32,13 @@ for filename in os.listdir(datasets):
                     created_at = "2020-10-10 10:10:10"
                     update_at = "2020-10-10 10:10:10"
                     add_hgraph= ("INSERT INTO hgraphs (id, name, category, created_at, updated_at)"
-                        " VALUES ('"+str(myuuid)+"', '"+str(files)+"', 'test', '"+str(created_at)+"', '"+str(update_at)+"')")    
+                        " VALUES ('"+str(myuuid)+"', '"+str(filename)+"', 'test', '"+str(created_at)+"', '"+str(update_at)+"')")    
                     cursor.execute(add_hgraph)
                     cnx.commit()
-                    local_path = datasets + "/" + filename + "/" + files
-                    read = open(local_path, 'r').read()
+                    # local_path = datasets + "/" + filename + "/" + files
+                    # read = open(local_path, 'r').read()
     
-                    read = "storage/datasets/template/info.md"
+                    read = "storage/datasets/" + filename + "/info.md"
                     # update row with description
                     update_hgraph = ("UPDATE hgraphs SET description = '"+str(read)+"' WHERE id = '"+str(myuuid)+"'")
                     # add_hgraph_file = "LOAD DATA INFILE '"+local_path+"' INTO TABLE dhgs.hgraphs.description;"
