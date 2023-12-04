@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->exec('python3 ./scripts/populateDB.py')->daily();
+        $schedule->exec('python3 ./scripts/checkRepo.py')->everyMinute();
+        $schedule->exec('bash ./scripts/gitPull.sh')->hourly();
     }
 
     /**

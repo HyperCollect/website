@@ -16,3 +16,16 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+// route for response with download file
+Route::get('/download/{file}', function ($file) {
+    $p = '/app/public/datasets/'.$file.'/'.$file.'.hg';
+    # concat file again to p
+    $path = storage_path($p);
+    # console.log($path
+    // return response()->download($path);
+    if (file_exists($path)) {
+        return response()->download($path);
+    }
+    return response()->json(['message' => 'File not found!'], 404);
+});
+
