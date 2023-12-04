@@ -46,6 +46,7 @@ for filename in os.listdir(datasets):
                         last = len(res)-1
                         first_commit = res[last]
                         author = first_commit['commit']['author']['name']
+                        author_url = first_commit['author']['html_url']
                         first_commit_date = first_commit['commit']['author']['date']
                         last_commit = res[0]
                         last_commit_date = last_commit['commit']['author']['date']
@@ -58,8 +59,8 @@ for filename in os.listdir(datasets):
                         descr = "storage/datasets/" + filename + "/info.md"
                         # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
                         url = "http://127.0.0.1:8000/download/" + filename
-                        add_hgraph= ("INSERT INTO hgraphs (id, name, url, category, description, created_at, updated_at)"
-                            " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + url +"', 'test','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
+                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, url, category, description, created_at, updated_at)"
+                            " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + url +"', 'test','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
                         cnx.commit()
                     else:

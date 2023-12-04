@@ -160,6 +160,8 @@ class HgraphResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('author')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->separator(',')
                     ->badge()
