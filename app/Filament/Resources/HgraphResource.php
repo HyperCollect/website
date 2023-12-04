@@ -11,27 +11,30 @@ use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Infolists\Components;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Textarea;
-use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Tabs;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Components\Group;
-use Filament\Infolists\Components\Split;
-use Filament\Infolists\Components\Section;
-use Filament\Infolists\Components\Tabs\Tab;
-use Filament\Infolists\Components\TextEntry;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Infolists\Components\ViewEntry;
 use App\Filament\Resources\HgraphResource\Pages;
-use Filament\Infolists\Components\Actions\Action;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\HgraphResource\RelationManagers;
-use Filament\Infolists\Components\Actions;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+
 
 class HgraphResource extends Resource
 {
     protected static ?string $model = Hgraph::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static ?string $navigationLabel = 'Hypergraphs';
+
+    public static ?string $pluralLabel = 'Hypergraphs';
+
 
     public static function form(Form $form): Form
     {
@@ -40,9 +43,12 @@ class HgraphResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('category')
-                    ->maxLength(255),
+                // Forms\Components\TextInput::make('category')
+                // ->multiple()
+                //     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
+                ->label('README.md')
+                ->rows(20)
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('nodes')
                     ->numeric(),
@@ -73,12 +79,25 @@ class HgraphResource extends Resource
                     Tabs\Tab::make('Graph data')
                     ->schema([
                         Components\Section::make()
+                        ->key('section1')
+                        ->headerActions([
+                            \Filament\Infolists\Components\Actions\Action::make('download')
+                                ->color('success')
+                                ->label('Download')
+                                ->icon('heroicon-o-arrow-down-tray')
+                                ->action(function ($record,  \Filament\Infolists\Components\Actions\Action $action) {
+                                    redirect()->to($record->url);
+                                })
+                                // ->action(function () {
+                                //     // ...
+                                // }),
+                        ])
                         ->schema([
                             Components\Grid::make(2)
                             ->schema([
                                 Components\Group::make([
                                     Infolists\Components\TextEntry::make('name'),
-                                    Infolists\Components\TextEntry::make('category')->badge()->color('danger')
+                                    Infolists\Components\TextEntry::make('category')->badge()->color('danger') ->separator(',')
                                    
                                 ]),
                                 Components\Group::make([
@@ -91,6 +110,7 @@ class HgraphResource extends Resource
                            
                             ])]),
                         Components\Section::make()
+                            
                             ->schema([
                                 Components\Grid::make(2)
                                 ->schema([
@@ -141,27 +161,36 @@ class HgraphResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
-                    ->badge()->color('danger')
+                    ->separator(',')
+                    ->badge()
+                    ->color('danger')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nodes')
                     ->numeric()
+                    ->label('# Nodes')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('edges')
                     ->numeric()
+                    ->label('# Edges')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dnodemax')
                     ->numeric()
                     ->label('Degree Node Max')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedgemax')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dnodeavg')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedgeavg')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -173,11 +202,58 @@ class HgraphResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('category')
+                ->multiple()
+                ->options(function () {
+                    $categories = Hgraph::query()->select('category')->distinct()->get();
+                    $values = [];
+                    foreach ($categories as $product) {
+                        foreach(explode(',', $product->category) as $value) {
+                            $values[] = trim($value);
+                            }
+                    }
+                    $values = array_unique($values);
+                    return $values;
+                })
+                ->label('Hgraph Category')
+                ->searchable(),
+                Filter::make('nodes')
+                ->form([
+                    TextInput::make('nodes2')
+                    ->numeric()
+                    ->label('Min # Nodes'),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['nodes2'],
+                            fn (Builder $query, $n): Builder => $query->where('nodes', '>=', $n),
+                        );
+                }),
+                Filter::make('edges')
+                ->form([
+                    TextInput::make('edges2')
+                    ->numeric()
+                    ->label('Min # Edges'),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['edges2'],
+                            fn (Builder $query, $n): Builder => $query->where('edges', '>=', $n),
+                        );
+                })
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                ViewAction::make(),
+               // EditAction::make(),
+                Tables\Actions\Action::make('download')
+                                ->label('Download')
+                                ->icon('heroicon-o-arrow-down-tray')
+                                ->color('success')
+                                ->action(function ($record, Tables\Actions\Action $action) {
+                                    redirect()->to($record->url);
+                                })
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -198,7 +274,7 @@ class HgraphResource extends Resource
         return [
             'index' => Pages\ListHgraphs::route('/'),
             'create' => Pages\CreateHgraph::route('/create'),
-            'edit' => Pages\EditHgraph::route('/{record}/edit'),
+            //'edit' => Pages\EditHgraph::route('/{record}/edit'),
             'view' => Pages\ViewHgraph::route('/{record}'),
         ];
     }

@@ -13,6 +13,7 @@ class Hgraph extends Model
        
        'name',
        'category',
+       'url',
        'description',
        'nodes',
        'edges',
@@ -23,5 +24,5 @@ class Hgraph extends Model
        'dnodes',
        'dedges'
     ];
-
+   
 }
