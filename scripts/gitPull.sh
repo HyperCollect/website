@@ -2,6 +2,6 @@
 
 # Pulls the latest changes from the remote repository for the datasets
 cd ..
-cd public/assets/datasets
+cd storage/app/public/datasets
 git pull origin main
 

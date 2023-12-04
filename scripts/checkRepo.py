@@ -14,13 +14,13 @@ DB_D= os.getenv("DB_DATABASE")
 GIT_U= os.getenv("GIT_USERNAME")
 GIT_T= os.getenv("GIT_TOKEN")
 
-# repo in same folder
+# repo in same root
 # d = dirname(dirname(dirname(abspath(__file__))))
 # datasets = d + "/datasets"
 
 d = dirname(dirname(abspath(__file__)))
-d = d + "/storage/app/public/datasets"
-print(d)
+datasets = d + "/storage/app/public/datasets"
+# print(d)
 
 for filename in os.listdir(datasets):
     f = os.path.join(datasets, filename)
@@ -57,7 +57,7 @@ for filename in os.listdir(datasets):
 
                         descr = "storage/datasets/" + filename + "/info.md"
                         # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
-                        url = "http://127.0.0.1:8000/download/" + filename + ".hg"
+                        url = "http://127.0.0.1:8000/download/" + filename
                         add_hgraph= ("INSERT INTO hgraphs (id, name, url, category, description, created_at, updated_at)"
                             " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + url +"', 'test','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
