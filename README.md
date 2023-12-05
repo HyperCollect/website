@@ -24,6 +24,18 @@ You can populate the database using the python script.
 # python dependencies
 pip install -r requirements.txt
 
+# julia dependencies
+to call julia from python, you need to install the julia python package:
+```bash
+python3 -m pip install --user julia
+```
+Then you need to start python3 shell and run:
+```python
+import julia
+julia.install()
+```
+
+At the end you can check if you populate the database correctly by running:
 ```bash
 python3 checkRepo.py
 ```
