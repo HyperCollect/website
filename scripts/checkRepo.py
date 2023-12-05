@@ -60,14 +60,25 @@ for filename in os.listdir(datasets):
                         update_at = last_commit_date.replace("T", " ")
                         update_at = update_at.replace("Z", "")
 
+                        # read the file
+                        categories_path = "./storage/app/public/datasets/" + filename + "/categories.info"
+                        # if the file is not present, create it
+                        categories = "empty"
+                        if os.path.isfile(categories_path):
+                            read = open(categories_path, "r").read()
+                            read = read.replace("\n", ", ")
+                            # remove last comma
+                            read = read[:-2]
+                            categories = str(read)
+
                         descr = "storage/datasets/" + filename + "/info.md"
                         # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
                         url = "http://127.0.0.1:8000/download/" + filename
                         pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                         (nodes, edges) = Main.collect_infos(pathToHg)
-                        print(nodes, edges)
                         add_hgraph= ("INSERT INTO hgraphs (id, name, author, nodes, edges, url, category, description, created_at, updated_at)"
-                            " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', 'test','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
+                            # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', 'test1, test2','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
+                            " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
                         cnx.commit()
                     else:
@@ -83,10 +94,6 @@ for filename in os.listdir(datasets):
                         db_row_UpdatedAt = len(result[0])-1
                         db_row_createdAt = len(result[0])-2
 
-                        pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
-                        (nodes, edges) = Main.collect_infos(pathToHg)
-                        print(nodes, edges)
-
                         if str(result[0][db_row_UpdatedAt]) != str(date):
                             # i have to update all the data
                             cursor = cnx.cursor()
@@ -96,7 +103,6 @@ for filename in os.listdir(datasets):
 
                             pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                             (nodes, edges) = Main.collect_infos(pathToHg)
-                            print(nodes, edges)
                             update_hgraph_stats = ("UPDATE hgraphs SET nodes = '"+str(nodes)+"', edges = '"+str(edges)+"' WHERE name = '"+str(filename)+"'")
                             cursor.execute(update_hgraph_stats)
                             cnx.commit()

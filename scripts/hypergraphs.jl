@@ -37,7 +37,6 @@ function infos(hg)
 end
 
 function collect_infos(path)
-    # path = "/Users/ddevin/Documents/dhgsRoot/website/storage/app/public/datasets/hg1/hg1.hg"
     hg = build_hg(path)[1]
     info = infos(hg)
     return info
