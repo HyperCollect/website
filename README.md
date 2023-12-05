@@ -28,7 +28,7 @@ you can generate a venv inside scripts folder and install the dependencies there
 ```bash
 python3.10 -m venv venv
 . venv/bin/activate
-pip3 install matplotlib python-dotenv requests
+pip3 install matplotlib python-dotenv requests mysql-connector-python
 python3 -m pip install julia
 ```
 
@@ -42,6 +42,9 @@ Then you need to start python3 shell and run:
 import julia
 julia.install()
 ```
+
+add Suppressor package to julia through package manager
+
 
 At the end you can check if you populate the database correctly by running:
 ```bash

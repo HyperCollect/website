@@ -75,10 +75,10 @@ for filename in os.listdir(datasets):
                         # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
                         url = "http://127.0.0.1:8000/download/" + filename
                         pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
-                        (nodes, edges) = Main.collect_infos(pathToHg)
-                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, nodes, edges, url, category, description, created_at, updated_at)"
-                            # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', 'test1, test2','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
-                            " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
+                        (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
+                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, url, category, description, created_at, updated_at)"
+                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
+                            # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
                         cnx.commit()
                     else:
@@ -102,7 +102,7 @@ for filename in os.listdir(datasets):
                             cnx.commit()
 
                             pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
-                            (nodes, edges) = Main.collect_infos(pathToHg)
+                            (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
                             update_hgraph_stats = ("UPDATE hgraphs SET nodes = '"+str(nodes)+"', edges = '"+str(edges)+"' WHERE name = '"+str(filename)+"'")
                             cursor.execute(update_hgraph_stats)
                             cnx.commit()
