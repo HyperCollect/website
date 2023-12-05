@@ -9,7 +9,8 @@ import uuid
 import requests
 from julia import Main
 
-Main.include("hypergraphs.jl")
+
+Main.include("./scripts/hypergraphs.jl")
 
 DB_U= os.getenv("DB_USERNAME")
 DB_P= os.getenv("DB_PASSWORD")
@@ -62,9 +63,9 @@ for filename in os.listdir(datasets):
                         descr = "storage/datasets/" + filename + "/info.md"
                         # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
                         url = "http://127.0.0.1:8000/download/" + filename
-                        pathToHg = "../storage/app/public/datasets/" + filename + "/" + filename + ".hg"
+                        pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                         (nodes, edges) = Main.collect_infos(pathToHg)
-
+                        print(nodes, edges)
                         add_hgraph= ("INSERT INTO hgraphs (id, name, author, nodes, edges, url, category, description, created_at, updated_at)"
                             " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', 'test','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
@@ -82,6 +83,10 @@ for filename in os.listdir(datasets):
                         db_row_UpdatedAt = len(result[0])-1
                         db_row_createdAt = len(result[0])-2
 
+                        pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
+                        (nodes, edges) = Main.collect_infos(pathToHg)
+                        print(nodes, edges)
+
                         if str(result[0][db_row_UpdatedAt]) != str(date):
                             # i have to update all the data
                             cursor = cnx.cursor()
@@ -89,8 +94,9 @@ for filename in os.listdir(datasets):
                             cursor.execute(update_hgraph)
                             cnx.commit()
 
-                            pathToHg = "../storage/app/public/datasets/" + filename + "/" + filename + ".hg"
+                            pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                             (nodes, edges) = Main.collect_infos(pathToHg)
+                            print(nodes, edges)
                             update_hgraph_stats = ("UPDATE hgraphs SET nodes = '"+str(nodes)+"', edges = '"+str(edges)+"' WHERE name = '"+str(filename)+"'")
                             cursor.execute(update_hgraph_stats)
                             cnx.commit()

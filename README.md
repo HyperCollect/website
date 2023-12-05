@@ -12,7 +12,7 @@
 ```bash
 composer install
 php artisan migrate:fresh
-cd website/storage/app/public && git clone https://github.com/HyperCollect/datasets
+cd website/storage/app/public && git clone https://github.com/HyperCollect/datasets && git config credential.helper store 
 php artisan storage:link
 php artisan serve
 ```
@@ -23,6 +23,14 @@ You can populate the database using the python script.
 
 # python dependencies
 pip install -r requirements.txt
+
+you can generate a venv inside scripts folder and install the dependencies there:
+```bash
+python3.10 -m venv venv
+. venv/bin/activate
+pip3 install matplotlib python-dotenv requests
+python3 -m pip install julia
+```
 
 # julia dependencies
 to call julia from python, you need to install the julia python package:
@@ -38,4 +46,9 @@ julia.install()
 At the end you can check if you populate the database correctly by running:
 ```bash
 python3 checkRepo.py
+```
+
+if you have setup correctly the repository, you can run the scheduler locally to activate the cron jobs:
+```bash
+php artisan schedule:work
 ```

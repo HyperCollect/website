@@ -1,4 +1,8 @@
-using SimpleHypergraphs
+using Suppressor
+@suppress begin
+    using SimpleHypergraphs
+end
+# using SimpleHypergraphs
 
 function build_hg(path)
 
