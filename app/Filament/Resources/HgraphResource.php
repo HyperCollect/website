@@ -213,8 +213,9 @@ class HgraphResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups([
-                'author',
+                'author'
             ])
+            ->defaultSort('name', 'asc')
             ->filters([
                 SelectFilter::make('categories')
                 ->multiple()

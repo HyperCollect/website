@@ -35,7 +35,7 @@ class LatestHgraphs extends BaseWidget
 
     protected function getDefaultTableSortColumn(): ?string
     {
-        return 'updated_at';
+        return 'name';
     }
 
     protected function getDefaultTableSortDirection(): ?string
@@ -56,16 +56,6 @@ class LatestHgraphs extends BaseWidget
     protected function getTableColumns(): array
     {
         return [
-            Tables\Columns\TextColumn::make('updated_at')
-                ->label('Updated at')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(),
-            Tables\Columns\TextColumn::make('created_at')
-                ->label('Created at')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(),
             Tables\Columns\TextColumn::make('name')
             ->searchable(),
             Tables\Columns\TextColumn::make('author')
@@ -82,6 +72,16 @@ class LatestHgraphs extends BaseWidget
                 ->numeric()
                 ->label('# Edges')
                 ->sortable(),
+            Tables\Columns\TextColumn::make('updated_at')
+                ->label('Updated at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(),
+            Tables\Columns\TextColumn::make('created_at')
+                ->label('Created at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('dnodemax')
                 ->numeric()
                 ->toggleable(isToggledHiddenByDefault: true)

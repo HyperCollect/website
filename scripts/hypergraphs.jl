@@ -97,8 +97,8 @@ function infos(hg)
     # distribution_edge_size = edge_degree_histogram(hg, normalized=false)
     distribution_node_degree = listNodeDegree(hg)
     distribution_edge_size = listEdgeDegree(hg)
-    node_degree_max = maximum(keys(distribution_node_degree))
-    edge_degree_max = maximum(keys(distribution_edge_size))
+    node_degree_max = maximum(distribution_node_degree)
+    edge_degree_max = maximum(distribution_edge_size)
     return (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max)
 end
 

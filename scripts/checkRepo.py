@@ -171,6 +171,11 @@ for filename in os.listdir(datasets):
 
                             pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                             (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
+                            
+                            distribution_node_degree.sort(reverse=True)
+                            distribution_node_degree = ",".join(str(x) for x in distribution_node_degree)
+                            distribution_edge_size.sort(reverse=True)
+                            distribution_edge_size = ",".join(str(x) for x in distribution_edge_size)
                             update_hgraph_stats = ("UPDATE hgraphs SET nodes = '"+str(nodes)+"', edges = '"+str(edges)+"' WHERE name = '"+str(filename)+"'")
                             cursor.execute(update_hgraph_stats)
                             cnx.commit()
