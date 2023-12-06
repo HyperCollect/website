@@ -15,7 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('category')->nullable();
-            $table->string('author');
+            $table->string('author')->nullable();
+            $table->string('authorurl')->nullable();
             $table->string('url')->nullable();
             $table->longText('description')->nullable();
             $table->integer('nodes')->unsigned()->nullable();

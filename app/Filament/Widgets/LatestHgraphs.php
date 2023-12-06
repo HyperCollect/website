@@ -70,9 +70,8 @@ class LatestHgraphs extends BaseWidget
             ->searchable(),
             Tables\Columns\TextColumn::make('author')
             ->searchable(),
-            Tables\Columns\TextColumn::make('category')
-                ->badge()->color('danger')
-                ->separator(',')
+            Tables\Columns\TextColumn::make('categories.type')
+                ->badge()
                 ->searchable(),
             Tables\Columns\TextColumn::make('nodes')
                 ->label('# Nodes')

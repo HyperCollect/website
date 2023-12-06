@@ -103,6 +103,10 @@ class HgraphResource extends Resource
                                     ->badge()
                                 ]),
                                 Components\Group::make([
+                                    Infolists\Components\TextEntry::make('author')->badge()->color('danger'),
+                                    Infolists\Components\TextEntry::make('authorurl')->badge()->color('danger')->url(
+                                        fn ($record):string => $record->authorurl
+                                    )->openUrlInNewTab(),
                                     Infolists\Components\TextEntry::make('created_at')->badge()->color('primary'),
                                     Infolists\Components\TextEntry::make('updated_at')->badge()->color('success')
                                 ]),
@@ -184,31 +188,37 @@ class HgraphResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedgemax')
                     ->numeric()
+                    ->label('Degree Edge Max')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dnodeavg')
                     ->numeric()
+                    ->label('Degree Node Avg')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedgeavg')
                     ->numeric()
+                    ->label('Degree Edge Avg')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
+                    ->label('Created At')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
+                    ->label('Updated At')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups([
-                'categories.type',
+                'author',
             ])
             ->filters([
-                SelectFilter::make('categories.type')
+                SelectFilter::make('categories')
                 ->multiple()
+                ->relationship('categories', 'type')
                 ->preload()
                 ->label('Hgraph Category')
                 ->searchable(),

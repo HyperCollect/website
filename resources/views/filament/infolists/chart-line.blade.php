@@ -16,7 +16,8 @@ new Chart("{{$id}}", {
   data: {
     labels: xValues_{{$id}},
     datasets: [{
-      data: yValues_{{$id}}
+      data: yValues_{{$id}},
+      borderColor: "white"
     }]
   },
   options: {
@@ -30,6 +31,9 @@ new Chart("{{$id}}", {
             ticks: {
                 beginAtZero: true
             }
+        }],
+        xAxes: [{
+            display: false
         }]
     }
   }

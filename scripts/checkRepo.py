@@ -136,9 +136,16 @@ for filename in os.listdir(datasets):
                         url = "http://127.0.0.1:8000/download/" + filename
                         pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                         (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
-                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, url, description, created_at, updated_at)"
+                        # sort distribution in ascending order
+
+                        distribution_node_degree.sort(reverse=True)
+                        distribution_node_degree = ",".join(str(x) for x in distribution_node_degree)
+                        distribution_edge_size.sort(reverse=True)
+                        distribution_edge_size = ",".join(str(x) for x in distribution_edge_size)
+                        
+                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, authorurl, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, url, description, created_at, updated_at)"
                                     #  " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
-                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
+                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + author_url + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
                             # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
                         cnx.commit()

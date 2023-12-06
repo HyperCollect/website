@@ -24,7 +24,7 @@ class Hgraph extends Model
        'dedges'
     ];
 
-    public function categories()
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Categories::class, 'hgraphs_categories', 'hgraph_id', 'category_id');
     }
