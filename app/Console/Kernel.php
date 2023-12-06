@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
             ->sendOutputTo(storage_path('logs/gitPull.log'));
         $schedule->exec('./scripts/venv/bin/python3 ./scripts/checkRepo.py')
             ->everyMinute()
-            ->sendOutputTo(storage_path('logs/checkRepo.log'));
+            ->appendOutputTo(storage_path('logs/checkRepo.log'));
     }
 
     /**

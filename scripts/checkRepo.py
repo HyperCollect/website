@@ -26,6 +26,22 @@ d = dirname(dirname(abspath(__file__)))
 datasets = d + "/storage/app/public/datasets"
 # print(d)
 
+# add empty category
+cnxEmpty = mysql.connector.connect(user=DB_U, password=DB_P, database=DB_D)
+category = "empty"
+search_empty = ("SELECT * FROM categories WHERE type = '"+category+"'")
+cursor = cnxEmpty.cursor()
+cursor.execute(search_empty)
+result = cursor.fetchall()
+if len(result) == 0:
+    myuuid_empty_category = uuid.uuid4()
+    cursor = cnxEmpty.cursor()
+    add_category = ("INSERT INTO categories (id, type)"
+                    " VALUES ('"+str(myuuid_empty_category)+"', '"+str(category)+"')")
+    cursor.execute(add_category)
+    cnxEmpty.commit()
+cnxEmpty.close()
+
 for filename in os.listdir(datasets):
     f = os.path.join(datasets, filename)
     # checking if it is a directory and not a hidden directory
@@ -66,18 +82,63 @@ for filename in os.listdir(datasets):
                         categories = "empty"
                         if os.path.isfile(categories_path):
                             read = open(categories_path, "r").read()
-                            read = read.replace("\n", ", ")
-                            # remove last comma
-                            read = read[:-2]
-                            categories = str(read)
+                            # read = read.replace("\n", ", ")
+                            # # remove last comma
+                            # read = read[:-2]
+                            # categories = str(read)
+                            categories = read.split("\n")
+                            for category in categories:
+                                if category == "":
+                                    continue
+                                else:
+                                    # check if the category is already in the database
+                                    search_category = ("SELECT * FROM categories WHERE type = '"+str(category)+"'")
+                                    cursor = cnx.cursor()
+                                    cursor.execute(search_category)
+                                    result_category = cursor.fetchall()
+
+                                    myuuid_category = ""
+                                    if len(result_category) == 0:
+                                        # if the category is not in the database, add it
+                                        myuuid_category = uuid.uuid4()
+                                        cursor = cnx.cursor()
+                                        add_category = ("INSERT INTO categories (id, type)"
+                                                        " VALUES ('"+str(myuuid_category)+"', '"+str(category)+"')")
+                                        cursor.execute(add_category)
+                                        cnx.commit()
+                                    else:
+                                        # if the category is in the database, get the id
+                                        myuuid_category = result_category[0]
+
+                                    # insert the category in the hgraph_categories table
+                                    cursor = cnx.cursor()
+                                    myuuid_hgraph_category = uuid.uuid4()
+                                    add_hgraph_category = ("INSERT INTO hgraphs_categories (id, hgraph_id, category_id)"
+                                                    " VALUES ('"+str(myuuid_hgraph_category)+"', '"+str(myuuid)+"', '"+str(myuuid_category)+"')")
+                                    cursor.execute(add_hgraph_category)
+                        else:
+                            # add empty category
+                            search_category = ("SELECT * FROM categories WHERE type = '"+str(category)+"'")
+                            cursor = cnx.cursor()
+                            cursor.execute(search_category)
+                            result_category = cursor.fetchall()
+                            myuuid_hgraph_category = uuid.uuid4()
+                            # print(result_category)
+                            myuuid_category = result_category[0][0]
+                            add_hgraph_category = ("INSERT INTO hgraphs_categories (id, hgraph_id, category_id)"
+                                                    " VALUES ('"+str(myuuid_hgraph_category)+"', '"+str(myuuid)+"', '"+str(myuuid_category)+"')")
+                            cursor.execute(add_hgraph_category)
+
+
 
                         descr = "storage/datasets/" + filename + "/info.md"
                         # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
                         url = "http://127.0.0.1:8000/download/" + filename
                         pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                         (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
-                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, url, category, description, created_at, updated_at)"
-                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
+                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, url, description, created_at, updated_at)"
+                                    #  " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
+                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
                             # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
                         cnx.commit()

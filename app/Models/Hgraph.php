@@ -12,7 +12,6 @@ class Hgraph extends Model
     protected $fillable = [
        
        'name',
-       'category',
        'url',
        'description',
        'nodes',
@@ -24,5 +23,9 @@ class Hgraph extends Model
        'dnodes',
        'dedges'
     ];
-   
+
+    public function categories()
+    {
+        return $this->belongsToMany(Categories::class, 'hgraphs_categories', 'hgraph_id', 'category_id');
+    }
 }

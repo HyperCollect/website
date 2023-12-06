@@ -97,8 +97,10 @@ class HgraphResource extends Resource
                             ->schema([
                                 Components\Group::make([
                                     Infolists\Components\TextEntry::make('name'),
-                                    Infolists\Components\TextEntry::make('category')->badge()->color('danger') ->separator(',')
-                                   
+                                    Infolists\Components\TextEntry::make('categories.type')->label('Categories')
+                                    // extract only the first category
+                                    
+                                    ->badge()
                                 ]),
                                 Components\Group::make([
                                     Infolists\Components\TextEntry::make('created_at')->badge()->color('primary'),
@@ -162,10 +164,8 @@ class HgraphResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('author')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category')
-                    ->separator(',')
+                Tables\Columns\TextColumn::make('categories.type')->label('Categories')
                     ->badge()
-                    ->color('danger')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nodes')
                     ->numeric()
@@ -203,20 +203,13 @@ class HgraphResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->groups([
+                'categories.type',
+            ])
             ->filters([
-                SelectFilter::make('category')
+                SelectFilter::make('categories.type')
                 ->multiple()
-                ->options(function () {
-                    $categories = Hgraph::query()->select('category')->distinct()->get();
-                    $values = [];
-                    foreach ($categories as $product) {
-                        foreach(explode(',', $product->category) as $value) {
-                            $values[] = trim($value);
-                            }
-                    }
-                    $values = array_unique($values);
-                    return $values;
-                })
+                ->preload()
                 ->label('Hgraph Category')
                 ->searchable(),
                 Filter::make('nodes')
