@@ -45,12 +45,12 @@ cnxEmpty.close()
 for filename in os.listdir(datasets):
     f = os.path.join(datasets, filename)
     # checking if it is a directory and not a hidden directory
-    if os.path.isdir(f) and not filename.startswith("."):
+    if os.path.isdir(f) and not filename.startswith(".") and not filename == "scripts":
         for files in os.listdir(f):
             # inside each folder | file.hg fild.md       
             if files.endswith(".md"):
                 try:
-                    apiCall = "https://api.github.com/repos/HyperCollect/datasets/commits?path=" + filename + "/info.md"
+                    apiCall = "https://api.github.com/repos/HyperCollect/datasets/commits?path=" + filename + "/README.md"
                     response = requests.get(apiCall, auth=(GIT_U, GIT_T))
                     res = response.json()
                     cnx = mysql.connector.connect(user=DB_U, password=DB_P, database=DB_D)
@@ -131,7 +131,7 @@ for filename in os.listdir(datasets):
 
 
 
-                        descr = "storage/datasets/" + filename + "/info.md"
+                        descr = "storage/datasets/" + filename + "/README.md"
                         # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
                         url = "http://127.0.0.1:8000/download/" + filename
                         pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
