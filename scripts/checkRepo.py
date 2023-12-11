@@ -79,7 +79,7 @@ for filename in os.listdir(datasets):
                         # read the file
                         categories_path = "./storage/app/public/datasets/" + filename + "/categories.info"
                         # if the file is not present, create it
-                        categories = "empty"
+                        categories_empty = "empty"
                         if os.path.isfile(categories_path):
                             read = open(categories_path, "r").read()
                             # read = read.replace("\n", ", ")
@@ -108,7 +108,7 @@ for filename in os.listdir(datasets):
                                         cnx.commit()
                                     else:
                                         # if the category is in the database, get the id
-                                        myuuid_category = result_category[0]
+                                        myuuid_category = result_category[0][0]
 
                                     # insert the category in the hgraph_categories table
                                     cursor = cnx.cursor()
@@ -118,7 +118,7 @@ for filename in os.listdir(datasets):
                                     cursor.execute(add_hgraph_category)
                         else:
                             # add empty category
-                            search_category = ("SELECT * FROM categories WHERE type = '"+str(category)+"'")
+                            search_category = ("SELECT * FROM categories WHERE type = '"+str(categories_empty)+"'")
                             cursor = cnx.cursor()
                             cursor.execute(search_category)
                             result_category = cursor.fetchall()
