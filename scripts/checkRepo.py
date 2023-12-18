@@ -50,7 +50,7 @@ for filename in os.listdir(datasets):
             # inside each folder | file.hg fild.md       
             if files.endswith(".md"):
                 try:
-                    apiCall = "https://api.github.com/repos/HyperCollect/datasets/commits?path=" + filename + "/README.md"
+                    apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/README.md"
                     response = requests.get(apiCall, auth=(GIT_U, GIT_T))
                     res = response.json()
                     cnx = mysql.connector.connect(user=DB_U, password=DB_P, database=DB_D)
@@ -132,7 +132,7 @@ for filename in os.listdir(datasets):
 
 
                         descr = "storage/datasets/" + filename + "/README.md"
-                        # url = "https://github.com/HyperCollect/datasets" + filename + "/" + filename + ".hg"
+                        # url = "https://github.com/HypergraphRepository/datasets" + filename + "/" + filename + ".hg"
                         url = "http://127.0.0.1:8000/download/" + filename
                         pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                         (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)

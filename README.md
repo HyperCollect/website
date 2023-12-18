@@ -12,7 +12,7 @@
 ```bash
 composer install
 php artisan migrate:fresh
-cd website/storage/app/public && git clone https://github.com/HyperCollect/datasets && git config credential.helper store 
+cd website/storage/app/public && git clone https://github.com/HypergraphRepository/datasets && git config credential.helper store 
 php artisan storage:link
 php artisan serve
 ```
