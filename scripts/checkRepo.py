@@ -20,9 +20,6 @@ DB_D= os.getenv("DB_DATABASE")
 DB_H= os.getenv("DB_HOST")
 GIT_U= os.getenv("GIT_USERNAME")
 GIT_T= os.getenv("GIT_TOKEN")
-print(DB_U)
-print(DB_P)
-print(DB_D)
 # repo in same root
 # d = dirname(dirname(dirname(abspath(__file__))))
 # datasets = d + "/datasets"
@@ -136,9 +133,9 @@ for filename in os.listdir(datasets):
 
 
 
-                        descr = "storage/datasets/" + filename + "/README.md"
+                        descr = "./storage/datasets/" + filename + "/README.md"
                         # url = "https://github.com/HypergraphRepository/datasets" + filename + "/" + filename + ".hg"
-                        url = "http://127.0.0.1:8000/download/" + filename
+                        url = "http://hypergraphrepository.di.unisa.it/download/" + filename
                         pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
                         (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
                         # sort distribution in ascending order
