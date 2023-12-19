@@ -1,0 +1,59 @@
+services:
+    app:
+     build:
+       args:
+         user: isis
+         uid: 1000
+       context: ./
+       dockerfile: Dockerfile
+     image: hgraph
+     container_name: hgraph
+     restart: unless-stopped
+     working_dir: /var/www/
+     volumes:
+       - ./:/var/www
+     networks:
+       - sail
+     depends_on:
+       - mysql
+    nginx:
+      image: nginx:1.25-alpine
+      container_name: hgraph-nginx
+      restart: unless-stopped
+      ports:
+        - 80:80
+      volumes:
+        - ./:/var/www
+        - ./docker/nginx:/etc/nginx/conf.d
+      networks:
+        - sail  
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'sail-mysql:/var/lib/mysql'
+            - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+networks:
+    sail:
+        driver: bridge
+volumes:
+    sail-mysql:
+        driver: local

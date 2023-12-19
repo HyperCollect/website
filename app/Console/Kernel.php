@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
         $schedule->exec('bash ./scripts/gitPull.sh')
             ->everyMinute()
             ->sendOutputTo(storage_path('logs/gitPull.log'));
-        $schedule->exec('./scripts/venv/bin/python3 ./scripts/checkRepo.py')
+        $schedule->exec('python3 ./scripts/checkRepo.py')
             ->everyMinute()
             ->appendOutputTo(storage_path('logs/checkRepo.log'));
     }

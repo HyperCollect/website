@@ -168,7 +168,7 @@ class HgraphResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('author')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('categories.type')->label('Categories')
+                Tables\Columns\TextColumn::make('categories.type')->label('Type')
                     ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nodes')

@@ -7,17 +7,22 @@ from dotenv import load_dotenv
 load_dotenv()
 import uuid
 import requests
+from julia import Julia
+jl = Julia(sysimage="scripts/sys.so")
 from julia import Main
 
 
-Main.include("./scripts/hypergraphs.jl")
+Main.include("scripts/hypergraphs.jl")
 
 DB_U= os.getenv("DB_USERNAME")
 DB_P= os.getenv("DB_PASSWORD")
 DB_D= os.getenv("DB_DATABASE")
+DB_H= os.getenv("DB_HOST")
 GIT_U= os.getenv("GIT_USERNAME")
 GIT_T= os.getenv("GIT_TOKEN")
-
+print(DB_U)
+print(DB_P)
+print(DB_D)
 # repo in same root
 # d = dirname(dirname(dirname(abspath(__file__))))
 # datasets = d + "/datasets"
@@ -27,7 +32,7 @@ datasets = d + "/storage/app/public/datasets"
 # print(d)
 
 # add empty category
-cnxEmpty = mysql.connector.connect(user=DB_U, password=DB_P, database=DB_D)
+cnxEmpty = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P, database=DB_D)
 category = "empty"
 search_empty = ("SELECT * FROM categories WHERE type = '"+category+"'")
 cursor = cnxEmpty.cursor()
@@ -53,7 +58,7 @@ for filename in os.listdir(datasets):
                     apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/README.md"
                     response = requests.get(apiCall, auth=(GIT_U, GIT_T))
                     res = response.json()
-                    cnx = mysql.connector.connect(user=DB_U, password=DB_P, database=DB_D)
+                    cnx = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P, database=DB_D)
                     # sql query to search for the name of the folder
                     search_hgraph = ("SELECT * FROM hgraphs WHERE name = '"+str(filename)+"'")
                     cursor = cnx.cursor()

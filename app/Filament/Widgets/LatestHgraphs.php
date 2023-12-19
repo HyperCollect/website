@@ -61,6 +61,7 @@ class LatestHgraphs extends BaseWidget
             Tables\Columns\TextColumn::make('author')
             ->searchable(),
             Tables\Columns\TextColumn::make('categories.type')
+                ->label('Type')    
                 ->badge()
                 ->searchable(),
             Tables\Columns\TextColumn::make('nodes')

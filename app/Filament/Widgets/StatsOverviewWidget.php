@@ -51,7 +51,7 @@ class StatsOverviewWidget extends BaseWidget
             ),
             Stat::make('ncategories', count($categories))
             ->icon('heroicon-o-eye')
-            ->label('Number of categories')
+            ->label('Number of types')
             
         ];
     }
