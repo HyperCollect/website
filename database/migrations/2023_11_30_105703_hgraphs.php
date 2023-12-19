@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('authorurl')->nullable();
             $table->string('url')->nullable();
             $table->longText('description')->nullable();
+            $table->longText('summary')->nullable();
             $table->integer('nodes')->unsigned()->nullable();
             $table->integer('edges')->unsigned()->nullable();
             $table->integer('dnodemax')->unsigned()->nullable();

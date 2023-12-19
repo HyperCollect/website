@@ -83,7 +83,9 @@ class HgraphResource extends Resource
                         ->headerActions([
                             \Filament\Infolists\Components\Actions\Action::make('download')
                                 ->color('success')
-                                ->label('Download')
+                                ->label(
+                                    fn ($record):string => 'Download ('.round(filesize(storage_path('/app/public/datasets/'.$record->name.'/'.$record->name.'.hg'))/1000000, 2).' MB)'
+                                )
                                 ->icon('heroicon-o-arrow-down-tray')
                                 ->action(function ($record,  \Filament\Infolists\Components\Actions\Action $action) {
                                     redirect()->to($record->url);
@@ -167,6 +169,8 @@ class HgraphResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('author')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('summary')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('categories.type')->label('Type')
                     ->badge()
@@ -254,7 +258,9 @@ class HgraphResource extends Resource
                 ViewAction::make(),
                // EditAction::make(),
                 Tables\Actions\Action::make('download')
-                                ->label('Download')
+                                ->label(
+                                    fn ($record):string => 'Download ('.round(filesize(storage_path('/app/public/datasets/'.$record->name.'/'.$record->name.'.hg'))/1000000, 2).' MB)'
+                                )
                                 ->icon('heroicon-o-arrow-down-tray')
                                 ->color('success')
                                 ->action(function ($record, Tables\Actions\Action $action) {
