@@ -22,11 +22,19 @@ services:
       restart: unless-stopped
       ports:
         - 80:80
+        - 443:443
       volumes:
         - ./:/var/www
         - ./docker/nginx:/etc/nginx/conf.d
+        - ./certbot/www/:/var/www/certbot/:ro
+        - ./certbot/conf/:/etc/nginx/ssl/:ro
       networks:
-        - sail  
+        - sail
+    certbot:
+      image: certbot/certbot:latest
+      volumes:
+        - ./certbot/www/:/var/www/certbot/:rw
+        - ./certbot/conf/:/etc/letsencrypt/:rw
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:

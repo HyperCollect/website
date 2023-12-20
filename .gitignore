@@ -21,3 +21,4 @@ composer.phar
 .DS_Store
 venv/
 sys.so
+certbot/
