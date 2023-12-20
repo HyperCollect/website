@@ -28,6 +28,8 @@ return new class extends Migration
             $table->float('dedgeavg')->unsigned()->nullable();
             $table->longText('dnodes')->nullable();
             $table->longText('dedges')->nullable();
+            $table->longText('dnodeshist')->nullable();
+            $table->longText('dedgeshist')->nullable();
             $table->timestamps();
         });
     }

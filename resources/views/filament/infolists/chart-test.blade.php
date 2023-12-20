@@ -7,9 +7,18 @@ $id = uniqid();
 <canvas id="{{$id}}" style="width:100%;max-width:700px"></canvas>
 
 <script>
-const yValues_{{$id}} = [{{ $getState() }}];
-const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
+const array_{{$id}} = [{{ $getState() }}];
+// const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
 
+const a = array_{{$id}}[0]
+
+// convert object to array
+const k = Object.keys(a)//.map((key) => [Number(key), a[key]]);
+const v = Object.values(a)//.map((key) => [Number(key), a[key]]);
+
+const b = k.map((key, index) => {
+    return {x: k[index], y: v[index]}
+})
 // Note: changes to the plugin code is not reflected to the chart, because the plugin is loaded at chart construction time and editor changes only trigger an chart.update().
 const plugin = {
   id: 'customCanvasBackgroundColor',
@@ -24,11 +33,14 @@ const plugin = {
 };
 
 new Chart("{{$id}}", {
-  type: "line",
+  type: "scatter",
   data: {
-    labels: xValues_{{$id}},
+    // labels: xValues_{{$id}},
     datasets: [{
-      data: yValues_{{$id}},
+      data: b,
+      // data: [
+      //   {x: 1, y: 1}
+      // ],
       borderColor: "black",
       // backgroundColor: '#9BD0F5',
       borderWidth: 1,
@@ -43,10 +55,15 @@ new Chart("{{$id}}", {
         yAxes: [{
             ticks: {
                 beginAtZero: true
-            }
+            },
+            type: 'logarithmic'
         }],
         xAxes: [{
-            display: false
+            ticks: {
+                beginAtZero: true,
+                maxTicksLimit: 10              
+            },
+            type: 'logarithmic'
         }]
     },
     plugins: {

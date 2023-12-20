@@ -93,13 +93,14 @@ function infos(hg)
     edges = nhe(hg) 
     avg_node_degree = sum([length(gethyperedges(hg, v)) for v in 1:nodes]) / nodes
     avg_edge_degree = sum([length(getvertices(hg, he)) for he in 1:edges]) / edges
-    # distribution_node_degree = node_degree_histogram(hg, normalized=false)
-    # distribution_edge_size = edge_degree_histogram(hg, normalized=false)
+    distribution_node_degree_hist = node_degree_histogram(hg, normalized=false)
+    distribution_edge_size_hist = edge_degree_histogram(hg, normalized=false)
     distribution_node_degree = listNodeDegree(hg)
     distribution_edge_size = listEdgeDegree(hg)
     node_degree_max = maximum(distribution_node_degree)
     edge_degree_max = maximum(distribution_edge_size)
-    return (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max)
+    return (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, 
+            node_degree_max, edge_degree_max, distribution_node_degree_hist, distribution_edge_size_hist)
 end
 
 function collect_infos(path)

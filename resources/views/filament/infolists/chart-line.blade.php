@@ -33,7 +33,10 @@ new Chart("{{$id}}", {
             }
         }],
         xAxes: [{
-            display: false
+            ticks: {
+                beginAtZero: true,
+                maxTicksLimit: 10              
+            }
         }]
     },
     responsive: true,

@@ -141,8 +141,8 @@ class HgraphResource extends Resource
                             ViewEntry::make('dnodes')->view('filament.infolists.chart-line')->columnSpanFull(),
                             Infolists\Components\TextEntry::make('')->default('Distribution of edges by degree')->columnSpanFull(),
                             ViewEntry::make('dedges')->view('filament.infolists.chart-line')->columnSpanFull(),
-                            Infolists\Components\TextEntry::make('')->default('Test Distrib')->columnSpanFull(),
-                            ViewEntry::make('dnodes')->view('filament.infolists.chart-test')->columnSpanFull(),
+                            Infolists\Components\TextEntry::make('')->default('scatter log log')->columnSpanFull(),
+                            ViewEntry::make('dnodeshist')->view('filament.infolists.chart-test')->columnSpanFull(),
                         ])
                     // Tabs\Tab::make('Download')
                     //     ->schema([
