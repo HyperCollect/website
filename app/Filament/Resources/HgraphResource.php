@@ -123,8 +123,8 @@ class HgraphResource extends Resource
                                 Components\Grid::make(2)
                                 ->schema([
                                     Components\Group::make([
-                                        Infolists\Components\TextEntry::make('nodes')->label('# Nodes'),
-                                        Infolists\Components\TextEntry::make('edges')->label('# Edges'),
+                                        Infolists\Components\TextEntry::make('nodes')->label('|V|'),
+                                        Infolists\Components\TextEntry::make('edges')->label('|E|'),
                                     ]),
                                     Components\Group::make([
                                         Infolists\Components\TextEntry::make('dnodemax')->label('Node degree max'),
@@ -177,12 +177,12 @@ class HgraphResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nodes')
                     ->numeric()
-                    ->label('# Nodes')
+                    ->label('|V|')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('edges')
                     ->numeric()
-                    ->label('# Edges')
+                    ->label('|E|')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dnodemax')
@@ -231,7 +231,7 @@ class HgraphResource extends Resource
                 ->form([
                     TextInput::make('nodes2')
                     ->numeric()
-                    ->label('Min # Nodes'),
+                    ->label('Min |V|'),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -244,7 +244,7 @@ class HgraphResource extends Resource
                 ->form([
                     TextInput::make('edges2')
                     ->numeric()
-                    ->label('Min # Edges'),
+                    ->label('Min |E|'),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query

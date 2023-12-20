@@ -67,13 +67,13 @@ class LatestHgraphs extends BaseWidget
                 ->badge()
                 ->searchable(),
             Tables\Columns\TextColumn::make('nodes')
-                ->label('# Nodes')
+                ->label('|V|')
                 ->numeric()
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('edges')
                 ->numeric()
-                ->label('# Edges')
+                ->label('|E|')
                 ->sortable(),
             Tables\Columns\TextColumn::make('updated_at')
                 ->label('Updated at')
