@@ -10,10 +10,12 @@
         padding: 4px;
         background-color: #18181b;
         border-radius: 10px;
+        border-bottom: 1px solid #ffffff;
     }
     
     .leg td:first-child {
         white-space: nowrap;
+        border-right: 1px solid #ffffff;
     }
     .leg th {
         text-align: left;
@@ -22,6 +24,7 @@
         background-color: #18181b;
         border-radius: 15px;
         padding: 20px;
+        border: 1px solid #222224;
     }
 </style>
 <div class="tablecontainer">
@@ -38,6 +41,10 @@
                 <td>Name of hypergraph</td>
             </tr>
             <tr>
+                <td>Author</td>
+                <td>User that uploaded the hypergraph</td>
+            </tr>
+            <tr>
                 <td>|V|</td>
                 <td>Number of nodes</td>
             </tr>
@@ -46,16 +53,28 @@
                 <td>Number of hyperedges</td>
             </tr>
             <tr>
-                <td>Author</td>
-                <td>User that uploaded the hypergraph</td>
+                <td>
+                    d<sub>max</sub>
+                </td>
+                <td>Maximum node degree</td>
             </tr>
             <tr>
-                <td>Created at</td>
-                <td>Time of upload</td>
+                <td>
+                    d<sub>avg</sub>
+                </td>
+                <td>Average node degree</td>
             </tr>
             <tr>
-                <td>Updated at</td>
-                <td>Last update</td>
+                <td>
+                    e<sub>max</sub>
+                </td>
+                <td>Maximum hyperedge degree</td>
+            </tr>
+            <tr>
+                <td>
+                    e<sub>avg</sub>
+                </td>
+                <td>Average hyperedge degree</td>
             </tr>
         </tbody>
     </table>

@@ -21,7 +21,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Infolists\Components\ViewEntry;
 use App\Filament\Resources\HgraphResource\Pages;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-
+use Illuminate\Support\HtmlString;
 
 class HgraphResource extends Resource
 {
@@ -187,22 +187,22 @@ class HgraphResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dnodemax')
                     ->numeric()
-                    ->label('Degree Node Max')
+                    ->label(fn() => new HtmlString('d<sub>max</sub>'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedgemax')
                     ->numeric()
-                    ->label('Degree Edge Max')
+                    ->label(fn() => new HtmlString('e<sub>max</sub>'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dnodeavg')
                     ->numeric()
-                    ->label('Degree Node Avg')
+                    ->label(fn() => new HtmlString('d<sub>avg</sub>'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dedgeavg')
                     ->numeric()
-                    ->label('Degree Edge Avg')
+                    ->label(fn() => new HtmlString('e<sub>avg</sub>'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\HgraphResource;
 use Filament\Widgets\TableWidget as BaseWidget;
 use App\Console\Commands\MailNotificationCommand;
+use Illuminate\Support\HtmlString;
 
 class LatestHgraphs extends BaseWidget
 {
@@ -88,17 +89,20 @@ class LatestHgraphs extends BaseWidget
             Tables\Columns\TextColumn::make('dnodemax')
                 ->numeric()
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->label('Degree Node Max')
+                ->label(fn() => new HtmlString('d<sub>max</sub>'))
                 ->sortable(),
             Tables\Columns\TextColumn::make('dedgemax')
                 ->numeric()
+                ->label(fn() => new HtmlString('e<sub>max</sub>'))
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('dnodeavg')
                 ->numeric()
+                ->label(fn() => new HtmlString('d<sub>avg</sub>'))
                 ->sortable() ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('dedgeavg')
                 ->numeric()
+                ->label(fn() => new HtmlString('e<sub>avg</sub>'))
                 ->sortable() ->toggleable(isToggledHiddenByDefault: true)
         ];
     }
