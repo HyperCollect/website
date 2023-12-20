@@ -7,9 +7,13 @@
     }
     .leg td,
     .leg th {
-        padding: 8px;
+        padding: 4px;
         background-color: #18181b;
-        border-radius: 10px; */
+        border-radius: 10px;
+    }
+    
+    .leg td:first-child {
+        white-space: nowrap;
     }
     .leg th {
         text-align: left;
