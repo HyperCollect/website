@@ -95,60 +95,54 @@ class HgraphResource extends Resource
                                 // }),
                         ])
                         ->schema([
-                            Components\Grid::make(2)
+                            Components\Grid::make(4)
                             ->schema([
                                 Components\Group::make([
-                                    Infolists\Components\TextEntry::make('name'),
-                                    Infolists\Components\TextEntry::make('categories.type')->label('Categories')
-                                    // extract only the first category
-                                    
-                                    ->badge()
-                                ]),
-                                Components\Group::make([
-                                    Infolists\Components\TextEntry::make('author')->badge()->color('danger'),
-                                    Infolists\Components\TextEntry::make('authorurl')->badge()->color('danger')->url(
+                                    Infolists\Components\TextEntry::make('name')->badge(),
+                                    Infolists\Components\TextEntry::make('categories.type')->label('Categories')->badge(),
+                                    Infolists\Components\TextEntry::make('author')->badge()->color('success'),
+                                    Infolists\Components\TextEntry::make('authorurl')->badge()->color('success')->url(
                                         fn ($record):string => $record->authorurl
                                     )->openUrlInNewTab(),
-                                    Infolists\Components\TextEntry::make('created_at')->badge()->color('primary'),
-                                    Infolists\Components\TextEntry::make('updated_at')->badge()->color('success')
+                                    Infolists\Components\TextEntry::make('created_at')->badge(),
+                                    Infolists\Components\TextEntry::make('updated_at')->badge()
                                 ]),
-                                // Action::make('star')
-                                // ->icon('heroicon-m-star')
-                                // ,
-                           
-                            ])]),
-                        Components\Section::make()
-                            
-                            ->schema([
-                                Components\Grid::make(2)
-                                ->schema([
-                                    Components\Group::make([
-                                        Infolists\Components\TextEntry::make('nodes')->label('|V|'),
-                                        Infolists\Components\TextEntry::make('edges')->label('|E|'),
-                                    ]),
-                                    Components\Group::make([
-                                        Infolists\Components\TextEntry::make('dnodemax')->label('Node degree max'),
-                                        Infolists\Components\TextEntry::make('dedgemax')->label('Edge degree max'),
-                                        Infolists\Components\TextEntry::make('dnodeavg')->label('Node degree avg'),
-                                        Infolists\Components\TextEntry::make('dedgeavg')->label('Edge degree avg'),
-                                    ]),
+                                Components\Group::make([
+                                    Infolists\Components\TextEntry::make('nodes')
+                                    ->label('|V|')
+                                    ->badge(),
+                                    Infolists\Components\TextEntry::make('edges')
+                                    ->label('|E|')
+                                    ->badge(),
+                                    Infolists\Components\TextEntry::make('dnodemax')
+                                    ->label(fn() => new HtmlString('d<sub>max</sub>'))
+                                    ->badge(),
+                                    Infolists\Components\TextEntry::make('dnodeavg')
+                                    ->label(fn() => new HtmlString('d<sub>avg</sub>'))
+                                    ->badge(),
+                                    Infolists\Components\TextEntry::make('dedgemax')
+                                    ->label(fn() => new HtmlString('e<sub>max</sub>'))
+                                    ->badge(),
+                                    Infolists\Components\TextEntry::make('dedgeavg')
+                                    ->label(fn() => new HtmlString('e<sub>avg</sub>'))
+                                    ->badge(),
                                 ]),
-                                
-                            ]),
+                            ])
+                        ]),
                         Components\Section::make()
                             ->schema([
                                 Infolists\Components\TextEntry::make('')->default('README.md')->columnSpanFull(),
                                 ViewEntry::make('description')->view('filament.infolists.markdown')
                             ])
-                       
-                       
                         ]),
-                    Tabs\Tab::make('Statistics')
+                    Tabs\Tab::make('Data Exploration')
                         ->schema([
                             Infolists\Components\TextEntry::make('')->default('Distribution of nodes by degree')->columnSpanFull(),
                             ViewEntry::make('dnodes')->view('filament.infolists.chart-line')->columnSpanFull(),
                             Infolists\Components\TextEntry::make('')->default('Distribution of edges by degree')->columnSpanFull(),
                             ViewEntry::make('dedges')->view('filament.infolists.chart-line')->columnSpanFull(),
+                            Infolists\Components\TextEntry::make('')->default('Test Distrib')->columnSpanFull(),
+                            ViewEntry::make('dnodes')->view('filament.infolists.chart-test')->columnSpanFull(),
                         ])
                     // Tabs\Tab::make('Download')
                     //     ->schema([
@@ -285,7 +279,7 @@ class HgraphResource extends Resource
     {
         return [
             'index' => Pages\ListHgraphs::route('/'),
-            'create' => Pages\CreateHgraph::route('/create'),
+            // 'create' => Pages\CreateHgraph::route('/create'),
             //'edit' => Pages\EditHgraph::route('/{record}/edit'),
             'view' => Pages\ViewHgraph::route('/{record}'),
         ];

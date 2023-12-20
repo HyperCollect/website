@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 // });
 // route for response with download file
 Route::get('/download/{file}', function ($file) {
-    $p = '/app/public/datasets/'.$file.'/'.$file.'.hg';
+    $p = '/app/public/datasets/'.$file.'/'.$file.'.hgf';
     # concat file again to p
     $path = storage_path($p);
     # console.log($path

@@ -61,10 +61,6 @@ class StatsOverviewWidget extends BaseWidget
             ->label('Number of types'),
             Stat::make('legend', "")
             ->view('filament.legend')
-            // ->icon('heroicon-o-eye')
-            // ->label('Legend'),
-
-            
         ];
     }
 }

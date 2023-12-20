@@ -10,14 +10,27 @@ $id = uniqid();
 const yValues_{{$id}} = [{{ $getState() }}];
 const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
 
+// Note: changes to the plugin code is not reflected to the chart, because the plugin is loaded at chart construction time and editor changes only trigger an chart.update().
+const plugin = {
+  id: 'customCanvasBackgroundColor',
+  beforeDraw: (chart, args, options) => {
+    const {ctx} = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = options.color || '#99ffff';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+
 new Chart("{{$id}}", {
   type: "line",
   data: {
     labels: xValues_{{$id}},
     datasets: [{
       data: yValues_{{$id}},
-      // borderColor: "white",
-      backgroundColor: '#9BD0F5',
+      borderColor: "black",
+      // backgroundColor: '#9BD0F5',
       borderWidth: 1,
     }]
   },
@@ -36,8 +49,12 @@ new Chart("{{$id}}", {
             display: false
         }]
     },
-    responsive: true,
-    
-  }
+    plugins: {
+      customCanvasBackgroundColor: {
+        color: 'white',
+      }
+    }
+  },
+  plugins: [plugin]
 });
 </script>
