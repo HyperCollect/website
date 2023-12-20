@@ -75,6 +75,8 @@ php artisan schedule:work
 docker compose up
 ```
 
+add Suppressor and SimpleHypergraph packages to julia through package manager
+
 To use the julia script, compile a custom system image for PyJulia, run
 ```bash
 python3 -m julia.sysimage sys.so

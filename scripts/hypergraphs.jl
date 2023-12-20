@@ -103,7 +103,7 @@ function infos(hg)
 end
 
 function collect_infos(path)
-    hg = build_hg(path)[1]
+    hg = hg_load(path)
     info = infos(hg)
     return info
 end

@@ -84,7 +84,7 @@ class HgraphResource extends Resource
                             \Filament\Infolists\Components\Actions\Action::make('download')
                                 ->color('success')
                                 ->label(
-                                    fn ($record):string => 'Download ('.round(filesize(storage_path('/app/public/datasets/'.$record->name.'/'.$record->name.'.hg'))/1000000, 2).' MB)'
+                                    fn ($record):string => 'Download ('.round(filesize(storage_path('/app/public/datasets/'.$record->name.'/'.$record->name.'.hgf'))/1000000, 2).' MB)'
                                 )
                                 ->icon('heroicon-o-arrow-down-tray')
                                 ->action(function ($record,  \Filament\Infolists\Components\Actions\Action $action) {
@@ -259,7 +259,7 @@ class HgraphResource extends Resource
                // EditAction::make(),
                 Tables\Actions\Action::make('download')
                                 ->label(
-                                    fn ($record):string => 'Download ('.round(filesize(storage_path('/app/public/datasets/'.$record->name.'/'.$record->name.'.hg'))/1000000, 2).' MB)'
+                                    fn ($record):string => 'Download ('.round(filesize(storage_path('/app/public/datasets/'.$record->name.'/'.$record->name.'.hgf'))/1000000, 2).' MB)'
                                 )
                                 ->icon('heroicon-o-arrow-down-tray')
                                 ->color('success')

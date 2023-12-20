@@ -134,9 +134,9 @@ for filename in os.listdir(datasets):
 
 
                         descr = "./storage/datasets/" + filename + "/README.md"
-                        # url = "https://github.com/HypergraphRepository/datasets" + filename + "/" + filename + ".hg"
-                        url = "http://hypergraphrepository.di.unisa.it/download/" + filename
-                        pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
+                        # url = "https://github.com/HypergraphRepository/datasets" + filename + "/" + filename + ".hgf"
+                        url = "https://hypergraphrepository.di.unisa.it/download/" + filename
+                        pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hgf"
                         (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
                         # sort distribution in ascending order
 
@@ -171,7 +171,7 @@ for filename in os.listdir(datasets):
                             cursor.execute(update_hgraph)
                             cnx.commit()
 
-                            pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
+                            pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hgf"
                             (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
                             
                             distribution_node_degree.sort(reverse=True)
