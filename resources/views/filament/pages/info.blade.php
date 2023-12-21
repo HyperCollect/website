@@ -101,6 +101,16 @@ html {
     width: 100%;
     display: block;
   }
+  .loghi {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
 }
 </style>
 
