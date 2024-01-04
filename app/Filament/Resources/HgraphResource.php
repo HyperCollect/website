@@ -137,13 +137,18 @@ class HgraphResource extends Resource
                         ]),
                     Tabs\Tab::make('Data Exploration')
                         ->schema([
-                            Infolists\Components\TextEntry::make('')->default('Node degree distribution')->columnSpanFull(),
+                            Infolists\Components\TextEntry::make('')
+                            ->default(fn() => new HtmlString('<strong>Node degree distribution</strong>'))
+                            ->columnSpanFull(),
                             ViewEntry::make('dnodes')->view('filament.infolists.chart-line-nodes')->columnSpanFull(),
-                            Infolists\Components\TextEntry::make('')->default('Node degree distribution log log scale')->columnSpanFull(),
+                            Infolists\Components\TextEntry::make('')
+                            ->default(fn() => new HtmlString('<strong>Node degree distribution log log scale</strong>'))
+                            ->columnSpanFull(),
                             ViewEntry::make('dnodeshist')->view('filament.infolists.chart-scatter')->columnSpanFull(),
-                            Infolists\Components\TextEntry::make('')->default('Hedges size distribution')->columnSpanFull(),
-                            ViewEntry::make('dedges')->view('filament.infolists.chart-line-edges')->columnSpanFull(),
-                            
+                            Infolists\Components\TextEntry::make('')
+                            ->default(fn() => new HtmlString('<strong>Hedges size distribution</strong>'))
+                            ->columnSpanFull(),
+                            ViewEntry::make('dedges')->view('filament.infolists.chart-line-edges')->columnSpanFull(),                  
                         ])
                     // Tabs\Tab::make('Download')
                     //     ->schema([

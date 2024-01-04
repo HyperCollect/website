@@ -55,25 +55,41 @@ new Chart("{{$id}}", {
             },
         yAxes: [{
             ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                fontSize: 15,
+                callback: function(...args) {
+                  const value = Chart.Ticks.formatters.logarithmic.call(this, ...args);
+                  if (value.length) {
+                    return Number(value).toLocaleString()
+                  }
+                  return value;
+                }
             },
             type: 'logarithmic',
             scaleLabel: {
                 display: true,
-                labelString: 'number of nodes',
-                fontSize: 18,
+                labelString: 'Number of nodes',
+                fontSize: 16,
             },
         }],
         xAxes: [{
             ticks: {
                 beginAtZero: true,
-                maxTicksLimit: 10              
+                maxTicksLimit: 10,
+                fontSize: 15,
+                callback: function(...args) {
+                  const value = Chart.Ticks.formatters.logarithmic.call(this, ...args);
+                  if (value.length) {
+                    return Number(value).toLocaleString()
+                  }
+                  return value;
+                }          
             },
             type: 'logarithmic',
             scaleLabel: {
                 display: true,
                 labelString: 'Degree',
-                fontSize: 18,
+                fontSize: 16,
             },
         }]
     },

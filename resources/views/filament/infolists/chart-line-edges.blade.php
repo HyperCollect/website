@@ -30,23 +30,25 @@ new Chart("{{$id}}", {
             },
         yAxes: [{
             ticks: {
-                beginAtZero: true
+                beginAtZero: true,
+                fontSize: 15
             },
             scaleLabel: {
                 display: true,
                 labelString: 'Size',
-                fontSize: 18,
+                fontSize: 16,
             },
         }],
         xAxes: [{
             ticks: {
                 beginAtZero: true,
-                maxTicksLimit: 10              
+                maxTicksLimit: 10,
+                fontSize: 15          
             },
             scaleLabel: {
                 display: true,
                 labelString: 'Number of hyperedges',
-                fontSize: 18,
+                fontSize: 16,
             },
         }]
     },

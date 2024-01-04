@@ -61,7 +61,7 @@ new Chart("{{$id}}", {
             scaleLabel: {
                 display: true,
                 labelString: 'Number of nodes',
-                fontSize: 18
+                fontSize: 16
             },
         }]
     },
