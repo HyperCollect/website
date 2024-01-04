@@ -137,12 +137,13 @@ class HgraphResource extends Resource
                         ]),
                     Tabs\Tab::make('Data Exploration')
                         ->schema([
-                            Infolists\Components\TextEntry::make('')->default('Distribution of nodes by degree')->columnSpanFull(),
-                            ViewEntry::make('dnodes')->view('filament.infolists.chart-line')->columnSpanFull(),
-                            Infolists\Components\TextEntry::make('')->default('Distribution of edges by degree')->columnSpanFull(),
-                            ViewEntry::make('dedges')->view('filament.infolists.chart-line')->columnSpanFull(),
-                            Infolists\Components\TextEntry::make('')->default('scatter log log')->columnSpanFull(),
-                            ViewEntry::make('dnodeshist')->view('filament.infolists.chart-test')->columnSpanFull(),
+                            Infolists\Components\TextEntry::make('')->default('Node degree distribution')->columnSpanFull(),
+                            ViewEntry::make('dnodes')->view('filament.infolists.chart-line-nodes')->columnSpanFull(),
+                            Infolists\Components\TextEntry::make('')->default('Node degree distribution log log scale')->columnSpanFull(),
+                            ViewEntry::make('dnodeshist')->view('filament.infolists.chart-scatter')->columnSpanFull(),
+                            Infolists\Components\TextEntry::make('')->default('Hedges size distribution')->columnSpanFull(),
+                            ViewEntry::make('dedges')->view('filament.infolists.chart-line-edges')->columnSpanFull(),
+                            
                         ])
                     // Tabs\Tab::make('Download')
                     //     ->schema([
@@ -165,7 +166,12 @@ class HgraphResource extends Resource
                 Tables\Columns\TextColumn::make('author')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('summary')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('domain')
+                    ->label('Category')
+                    ->searchable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('categories.type')->label('Type')
                     ->badge()
                     ->searchable(),

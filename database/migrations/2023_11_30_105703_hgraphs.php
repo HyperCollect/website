@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('hgraphs', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('domain')->nullable();
             $table->string('category')->nullable();
             $table->string('author')->nullable();
             $table->string('authorurl')->nullable();

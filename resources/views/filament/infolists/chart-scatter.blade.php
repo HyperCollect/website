@@ -1,5 +1,6 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-</script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> -->
 @php
 $id = uniqid();
 @endphp
@@ -20,17 +21,17 @@ const b = k.map((key, index) => {
     return {x: k[index], y: v[index]}
 })
 // Note: changes to the plugin code is not reflected to the chart, because the plugin is loaded at chart construction time and editor changes only trigger an chart.update().
-const plugin = {
-  id: 'customCanvasBackgroundColor',
-  beforeDraw: (chart, args, options) => {
-    const {ctx} = chart;
-    ctx.save();
-    ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = options.color || '#99ffff';
-    ctx.fillRect(0, 0, chart.width, chart.height);
-    ctx.restore();
-  }
-};
+// const plugin = {
+//   id: 'customCanvasBackgroundColor',
+//   beforeDraw: (chart, args, options) => {
+//     const {ctx} = chart;
+//     ctx.save();
+//     ctx.globalCompositeOperation = 'destination-over';
+//     ctx.fillStyle = options.color || '#99ffff';
+//     ctx.fillRect(0, 0, chart.width, chart.height);
+//     ctx.restore();
+//   }
+// };
 
 new Chart("{{$id}}", {
   type: "scatter",
@@ -56,19 +57,44 @@ new Chart("{{$id}}", {
             ticks: {
                 beginAtZero: true
             },
-            type: 'logarithmic'
+            type: 'logarithmic',
+            scaleLabel: {
+                display: true,
+                labelString: 'number of nodes',
+                fontSize: 18,
+            },
         }],
         xAxes: [{
             ticks: {
                 beginAtZero: true,
                 maxTicksLimit: 10              
             },
-            type: 'logarithmic'
+            type: 'logarithmic',
+            scaleLabel: {
+                display: true,
+                labelString: 'Degree',
+                fontSize: 18,
+            },
         }]
     },
     plugins: {
       customCanvasBackgroundColor: {
         color: 'white',
+      },
+      zoom: {
+        // Container for pan options
+        pan: {
+            enabled: true,
+            mode: 'xy'
+        },
+
+        // Container for zoom options
+        zoom: {
+            // Boolean to enable zooming
+            enabled: true,
+            mode: 'xy',
+
+        }
       }
     }
   },

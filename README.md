@@ -69,10 +69,17 @@ if you have setup correctly the repository, you can run the scheduler locally to
 ```bash
 php artisan schedule:work
 ```
+Look at the cron job section to set up a cron job on your machine.
 
 # Docker build
 ```bash
-docker compose up
+docker compose up -d
+```
+
+create your db
+```bash
+sudo docker exec -it <mysqlcontainer> mysql -u <username> -p
+create database <dbname>;
 ```
 
 add Suppressor and SimpleHypergraph packages to julia through package manager
@@ -90,4 +97,15 @@ docker compose build name_service
 To run a command inside the docker
 ```bash
 sudo docker exec -it hgraph php artisan schedule:test
+```
+
+# cron job
+
+To run the scheduler with the scripts, is good practice to set up a cron job this way:
+```bash
+crontab -e
+```
+and insert the following line:
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```

@@ -6,7 +6,7 @@
   text-decoration: none;
 }
 .tablecontainer {
-        background-color: #18181b;
+        /* background-color: #18181b; */
         border-radius: 15px;
         padding: 20px;
         border: 1px solid #222224;
@@ -31,7 +31,7 @@ html {
   padding: 20px;
   text-align: center;
   /* background-color: #474e5d; */
-  color: white;
+  /* color: white; */
   border: 1px solid #222224;
   border-radius: 15px;
   margin: 8px;
@@ -39,7 +39,7 @@ html {
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   margin: 8px;
-  border: 2px solid #222224;
+  border: 1px solid #222224;
   border-radius: 15px;
 }
 
@@ -63,13 +63,13 @@ html {
   outline: 0;
   display: inline-block;
   padding: 8px;
-  color: white;
-  /* background-color: #000; */
+  /* color: white; */
+  background-color: #2b9d0475;
   text-align: center;
   cursor: pointer;
   width: 100%;
   border-radius: 15px;
-  border: 2px solid #222224;
+  border: 1px solid #222224;
   margin-bottom: 5px;
 }
 

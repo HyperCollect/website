@@ -13,11 +13,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->exec('bash ./scripts/gitPull.sh')
-            ->everyMinute()
+            ->hourly()
             ->sendOutputTo(storage_path('logs/gitPull.log'));
         $schedule->exec('python3 ./scripts/checkRepo.py')
-            ->everyMinute()
-            ->appendOutputTo(storage_path('logs/checkRepo.log'));
+            ->hourly()
+            ->sendOutputTo(storage_path('logs/checkRepo.log'));
     }
 
     /**

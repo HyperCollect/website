@@ -8,23 +8,23 @@
     .leg td,
     .leg th {
         padding: 4px;
-        background-color: #18181b;
+        /* background-color: #18181b; */
         border-radius: 10px;
-        border-bottom: 1px solid #ffffff;
+        border-bottom: 1px solid #000000;
     }
     
     .leg td:first-child {
         white-space: nowrap;
-        border-right: 1px solid #ffffff;
+        border-right: 1px solid #000000;
     }
     .leg th {
         text-align: left;
     }
     .tablecontainer {
-        background-color: #18181b;
+        /* background-color: #18181b; */
         border-radius: 15px;
         padding: 20px;
-        border: 1px solid #222224;
+        border: 1px solid #eaeaea;
     }
 </style>
 <div class="tablecontainer">
