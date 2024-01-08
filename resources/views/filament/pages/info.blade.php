@@ -117,14 +117,16 @@ html {
 <div class="tablecontainer">
     <div class="about-section">
         <div class="row loghi">
-                <img src="assets/imgs/logoISIS.png" style="width:50%">
-                <img src="assets/imgs/logoUnisa.png" style="width:50%">
+                <!-- <img src="assets/imgs/logoISIS.png" style="width:50%"> -->
+                <img src="assets/imgs/logoUnisa.png" style="width:35%">
+                <img src="assets/imgs/logoUnito.png" style="width:50%">
         </div>
-        <div class="row loghi">
+        <!-- <div class="row loghi">
             <img src="assets/imgs/logoInformatica.png" style="width:75%">
-        </div>
+        </div> -->
         <p>Hypergraph Repository is a web application that allows users to upload and share hypergraphs.</p>
-        <p>It is developed and maintained by <a href="https://www.isislab.it/" target="_blank" class="mylink">ISISLab</a> at the University of Salerno.</p>
+        <!-- <p>It is developed and maintained by members of <a href="https://www.isislab.it/" target="_blank" class="mylink">ISISLab</a> at the University of Salerno and .</p> -->
+        <p>It is developed and maintained by researchers at the University of Salerno and Torino.</p>
         <p><a href="https://github.com/HypergraphRepository/datasets" target="_blank" class="mylink">Check our dataset repository</a></p>
     </div>
 
@@ -163,7 +165,7 @@ html {
             <img src="assets/imgs/cspagn.png" class="avatar">
             <div class="container">
                 <h2>Carmine Spagnuolo</h2>
-                <p class="title">Researcher (RTD-B)</p>
+                <p class="title">Assistant Professor</p>
                 <p>@ Università di Salerno · Italy</p>
                 <p>cspagnuolo@unisa.it</p>
                 <p><button class="button" onclick="location.href='mailto:cspagnuolo@unisa.it';">Contact</button></p>

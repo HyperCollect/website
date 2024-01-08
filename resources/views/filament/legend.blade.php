@@ -21,7 +21,7 @@
         text-align: left;
     }
     .tablecontainer {
-        /* background-color: #18181b; */
+        background-color: white;
         border-radius: 15px;
         padding: 20px;
         border: 1px solid #eaeaea;
@@ -68,13 +68,13 @@
                 <td>
                     e<sub>max</sub>
                 </td>
-                <td>Maximum hyperedge degree</td>
+                <td>Maximum hyperedge size</td>
             </tr>
             <tr>
                 <td>
                     e<sub>avg</sub>
                 </td>
-                <td>Average hyperedge degree</td>
+                <td>Average hyperedge size</td>
             </tr>
         </tbody>
     </table>

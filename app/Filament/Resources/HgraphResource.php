@@ -76,7 +76,7 @@ class HgraphResource extends Resource
                 ->columnSpan('full')
                 ->persistTabInQueryString()
                 ->tabs([
-                    Tabs\Tab::make('Graph data')
+                    Tabs\Tab::make('Hypergraph data')
                     ->schema([
                         Components\Section::make()
                         ->key('section1')
@@ -175,6 +175,7 @@ class HgraphResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('domain')
                     ->label('Category')
+                    ->badge()
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('categories.type')->label('Type')
@@ -222,7 +223,8 @@ class HgraphResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups([
-                'author'
+                'author',
+                'domain',
             ])
             ->defaultSort('name', 'asc')
             ->filters([
@@ -230,7 +232,7 @@ class HgraphResource extends Resource
                 ->multiple()
                 ->relationship('categories', 'type')
                 ->preload()
-                ->label('Hgraph Category')
+                ->label('Hgraph Types')
                 ->searchable(),
                 Filter::make('nodes')
                 ->form([

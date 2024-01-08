@@ -82,6 +82,7 @@ for filename in os.listdir(datasets):
                         categories_path = "./storage/app/public/datasets/" + filename + "/categories.info"
                         # if the file is not present, create it
                         categories_empty = "empty"
+                        domain = "empty"
                         if os.path.isfile(categories_path):
                             read = open(categories_path, "r").read()
                             # read = read.replace("\n", ", ")
@@ -89,7 +90,10 @@ for filename in os.listdir(datasets):
                             # read = read[:-2]
                             # categories = str(read)
                             categories = read.split("\n")
-                            for category in categories:
+                            my_domain = categories[0]
+                            domain = my_domain
+                            # exclude first two lines
+                            for category in categories[2:]:
                                 if category == "":
                                     continue
                                 else:
@@ -145,9 +149,9 @@ for filename in os.listdir(datasets):
                         distribution_edge_size.sort(reverse=True)
                         distribution_edge_size = ",".join(str(x) for x in distribution_edge_size)
                         summary = "test summary"
-                        add_hgraph= ("INSERT INTO hgraphs (id, name, summary, author, authorurl, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, dedgeshist, dnodeshist, url, description, created_at, updated_at)"
+                        add_hgraph= ("INSERT INTO hgraphs (id, name, summary, domain, author, authorurl, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, dedgeshist, dnodeshist, url, description, created_at, updated_at)"
                                     #  " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
-                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + str(summary) + "','" + author + "','" + author_url + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + str(distribution_edge_size_hist) + "','" + str(distribution_node_degree_hist) + "','" + url +"', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
+                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + str(summary) + "','" + str(domain) + "','" + author + "','" + author_url + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + str(distribution_edge_size_hist) + "','" + str(distribution_node_degree_hist) + "','" + url +"', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
                             # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
                         cnx.commit()
