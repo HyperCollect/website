@@ -1,3 +1,6 @@
+import Pkg;
+Pkg.add("SimpleHypergraphs")
+Pkg.add("Suppressor")
 using Suppressor
 @suppress begin
     using SimpleHypergraphs

@@ -73,6 +73,10 @@ html {
   margin-bottom: 5px;
 }
 
+.ds {
+  width: 30%;
+}
+
 .button:hover {
   background-color: #555;
 }
@@ -127,8 +131,9 @@ html {
         <p>Hypergraph Repository is a web application that allows users to upload and share hypergraphs.</p>
         <!-- <p>It is developed and maintained by members of <a href="https://www.isislab.it/" target="_blank" class="mylink">ISISLab</a> at the University of Salerno and .</p> -->
         <p>It is developed and maintained by researchers at the University of Salerno and Torino.</p>
-        <p><a href="https://github.com/HypergraphRepository/datasets" target="_blank" class="mylink">Check our dataset repository</a></p>
-    </div>
+        <!-- <p><a href="https://github.com/HypergraphRepository/datasets" target="_blank" class="mylink">Check our dataset repository</a></p> -->
+        <button class="button ds"><a href="https://github.com/HypergraphRepository/datasets" target="_blank">Upload your dataset</a></button>
+      </div>
 
     <h2 style="text-align:center">Our Team</h2>
     <div class="row">
