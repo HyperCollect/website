@@ -15,6 +15,7 @@ edgesizechart = new Chart("{{$id}}", {
     labels: xValues_{{$id}},
     datasets: [{
       data: yValues_{{$id}},
+      pointRadius: 0,
     }]
   },
   options: {

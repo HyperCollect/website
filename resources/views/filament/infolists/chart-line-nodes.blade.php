@@ -33,6 +33,8 @@ var nodedegreechart = new Chart("{{$id}}", {
     labels: xValues_{{$id}},
     datasets: [{
       data: yValues_{{$id}},
+      spanGaps: true,
+      pointRadius: 0,
     }]
   },
   options: {
@@ -74,6 +76,12 @@ var nodedegreechart = new Chart("{{$id}}", {
         },
         legend: {
             display: false
+        },
+        decimation: {
+          enabled: true,
+          // algorithm: 'min',
+          // samples: 100,
+          // threshold: 2000
         }
     },
     animation: false,
