@@ -9,7 +9,8 @@
         /* background-color: #18181b; */
         border-radius: 15px;
         padding: 20px;
-        border: 1px solid #222224;
+        border: 1px solid #eaeaea;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 html {
@@ -32,14 +33,15 @@ html {
   text-align: center;
   /* background-color: #474e5d; */
   /* color: white; */
-  border: 1px solid #222224;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   margin: 8px;
 }
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   margin: 8px;
-  border: 1px solid #222224;
+  /* border: 1px solid #222224; */
   border-radius: 15px;
 }
 
@@ -64,7 +66,7 @@ html {
   display: inline-block;
   padding: 8px;
   /* color: white; */
-  background-color: #2b9d0475;
+  background-color: #4CAF50;
   text-align: center;
   cursor: pointer;
   width: 100%;
@@ -78,7 +80,7 @@ html {
 }
 
 .button:hover {
-  background-color: #555;
+  background-color: #3e8e41;
 }
 
 .avatar {
@@ -143,7 +145,7 @@ html {
             <div class="container">
                 <h2>Daniele De Vinco</h2>
                 <p class="title">2°year Ph.D.</p>
-                <p>@ Università di Salerno · Italy</p>
+                <p>@ Università degli studi di Salerno · Italy</p>
                 <p>ddevinco@unisa.it</p>
                 <p><button class="button" onclick="location.href='mailto:ddevinco@unisa.it';">Contact</button></p>
                 <button class="button"><a href="https://ddevin96.github.io/ddevin/" target="_blank">Personal Page</a></button>
@@ -157,7 +159,7 @@ html {
             <div class="container">
                 <h2>Alessia Antelmi</h2>
                 <p class="title">Researcher (RTD-A)</p>
-                <p>@ Università di Torino · Italy</p>
+                <p>@ Università degli studi di Torino ·   Italy</p>
                 <p>alessia.antelmi@unito.it</p>
                 <p><button class="button" onclick="location.href='mailto:alessia.antelmi@unito.it';">Contact</button></p>
                 <button class="button"><a href="https://alessant.github.io/" target="_blank">Personal Page</button></p>
@@ -171,7 +173,7 @@ html {
             <div class="container">
                 <h2>Carmine Spagnuolo</h2>
                 <p class="title">Assistant Professor</p>
-                <p>@ Università di Salerno · Italy</p>
+                <p>@ Università degli studi di Salerno · Italy</p>
                 <p>cspagnuolo@unisa.it</p>
                 <p><button class="button" onclick="location.href='mailto:cspagnuolo@unisa.it';">Contact</button></p>
                 <button class="button"><a href="https://spagnuolocarmine.github.io/" target="_blank">Personal Page</button></p>

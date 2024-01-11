@@ -1,9 +1,26 @@
 @php
 $id = uniqid();
 @endphp
-<canvas id="{{$id}}" style="width:80%;max-width:700px"></canvas>
-<button class="chartbutton" onclick="window.nodedegreescatterchart.resetZoom()">Reset Zoom</button>
+<div class="block">
+  <canvas id="{{$id}}" style="width:80%;max-width:700px"></canvas>
+  <div id="buttons_{{$id}}">
+    <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
+    <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
+  </div>
+</div>
 
+<script>
+function resetZoom{{$id}}() {
+  var chart = window.chart_{{$id}};
+  chart.resetZoom();
+}
+function toggleZoom{{$id}}() {
+  var chart = window.chart_{{$id}};
+  chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
+  chart.update();
+  topRightAlert('Zoom ' + zoomStatus(chart));
+}
+</script>
 <script>
 const array_{{$id}} = [{{ $getState() }}];
 // const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
@@ -18,7 +35,7 @@ const b = k.map((key, index) => {
     return {x: k[index], y: v[index]}
 })
 
-var nodedegreescatterchart = new Chart("{{$id}}", {
+var chart_{{$id}} = new Chart("{{$id}}", {
   type: "scatter",
   data: {
     // labels: xValues_{{$id}},
@@ -59,23 +76,18 @@ var nodedegreescatterchart = new Chart("{{$id}}", {
         },
     },
     plugins: {
-        // Container for zoom options
-        zoom: {
-          zoom: {
-            wheel: {
-                enabled: true,
-            },
-            pinch: {
-                enabled: true
-            },
-            mode: 'xy',
-          }
+        zoom: zoomOptions,
+        title: {
+          display: false,
+          position: 'bottom',
+          text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
         },
         legend: {
             display: false
-        }
+        },
     },
     animation: false,
   },
+  responsive: true,
 });
 </script>
