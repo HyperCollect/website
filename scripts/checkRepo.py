@@ -11,7 +11,6 @@ from julia import Julia
 jl = Julia(sysimage="scripts/sys.so")
 from julia import Main
 
-
 Main.include("scripts/hypergraphs.jl")
 
 DB_U= os.getenv("DB_USERNAME")
