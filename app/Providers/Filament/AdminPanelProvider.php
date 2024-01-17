@@ -42,6 +42,10 @@ class AdminPanelProvider extends PanelProvider
               // Widgets\AccountWidget::class,
               //Widgets\FilamentInfoWidget::class,
             ])
+            ->renderHook(
+              'panels::head.start',
+              fn () => view('analyticsTag'),
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

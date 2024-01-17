@@ -2,11 +2,12 @@
 $id = uniqid();
 @endphp
 
-<div class="block">
-  <canvas id="{{$id}}" style="width:80%;max-width:700px"></canvas>
+<div class="blockCanvas">
+  <canvas id="{{$id}}" class="mycanvas"></canvas>
   <div id="buttons_{{$id}}">
     <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
     <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
+    <button class="chartbutton" onclick="downloadAsPng{{$id}}()">Download as PNG</button>
   </div>
 </div>
 <script>
@@ -20,6 +21,13 @@ function toggleZoom{{$id}}() {
   chart.update();
   topRightAlert('Zoom ' + zoomStatus(chart));
 }
+function downloadAsPng{{$id}}() {
+  var imagelink = document.createElement('a');
+  var canvas = document.getElementById("{{$id}}");
+  imagelink.href = canvas.toDataURL("image/png");
+  imagelink.download = "{{$id}}.png";
+  imagelink.click();
+}
 </script>
 <script>
 const yValues_{{$id}} = [{{ $getState() }}];
@@ -30,6 +38,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
   data: {
     labels: xValues_{{$id}},
     datasets: [{
+      label: 'Hedges size distribution',
       data: yValues_{{$id}},
       spanGaps: true,
       pointRadius: 0,
@@ -40,18 +49,18 @@ var chart_{{$id}} = new Chart("{{$id}}", {
       y: {
           title: {
               display: true,
-              text: 'Degree',
+              text: 'Size',
               font: {
-                  size: 15
+                  size: 17
               }
           },
       },
       x: {
           title: {
               display: true,
-              text: 'Number of nodes',
+              text: 'Number of hyperedges',
               font: {
-                  size: 15
+                  size: 17
               }
           },
           ticks: {
@@ -67,7 +76,12 @@ var chart_{{$id}} = new Chart("{{$id}}", {
           text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
         },
         legend: {
-            display: false
+          display: true,
+            labels: {
+              font: {
+                size: 20
+              }
+            }
         },
         decimation: {
           enabled: true,

@@ -15,18 +15,19 @@ RUN apt-get update && apt-get install -y \
     unzip \
     python3 \
     python3-pip \
-    wget
+    wget \
+    libpq-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install matplotlib python-dotenv requests mysql-connector-python --break-system-packages
+RUN pip3 install matplotlib python-dotenv requests psycopg --break-system-packages
 RUN wget https://julialang-s3.julialang.org/bin/linux/x64/1.8/julia-1.8.1-linux-x86_64.tar.gz && tar zxvf julia-1.8.1-linux-x86_64.tar.gz
 RUN cp -r julia-1.8.1 /opt/ && ln -s /opt/julia-1.8.1/bin/julia /usr/local/bin/julia
 RUN python3 -m pip install --user julia --break-system-packages
-
+RUN python3 -c "exec(\"import julia\njulia.install()\")"
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl
+RUN docker-php-ext-install pdo pdo_pgsql pdo_mysql mbstring exif pcntl bcmath gd intl
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

@@ -20,24 +20,35 @@ $id = uniqid();
   font-size: 16px;
   border-radius: 10px;
   display: inline-block;
-  /* margin-left: auto;
-  margin-right: auto;  */
+  margin-left: auto;
+  margin-right: auto;
 }
 .chartbutton:hover {
   background-color: #3e8e41; /* Green */
 }
-.block{
+.blockCanvas{
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
+.mycanvas{
+  width: 100%;
+}
+
+@media screen and (max-width: 650px) {
+  .chartbutton {
+    display: none;
+  }
+}
 </style>
 
-<div class="block">
-  <canvas id="{{$id}}" style="width:80%;max-width:700px"></canvas>
+<div class="blockCanvas">
+  <canvas id="{{$id}}" class="mycanvas"></canvas>
   <div id="buttons_{{$id}}">
     <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
     <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
+    <button class="chartbutton" onclick="downloadAsPng{{$id}}()">Download as PNG</button>
   </div>
 </div>
 <script>
@@ -50,6 +61,13 @@ function toggleZoom{{$id}}() {
   chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
   chart.update();
   topRightAlert('Zoom ' + zoomStatus(chart));
+}
+function downloadAsPng{{$id}}() {
+  var imagelink = document.createElement('a');
+  var canvas = document.getElementById("{{$id}}");
+  imagelink.href = canvas.toDataURL("image/png");
+  imagelink.download = "{{$id}}.png";
+  imagelink.click();
 }
 </script>
 
@@ -98,9 +116,11 @@ var chart_{{$id}} = new Chart("{{$id}}", {
   data: {
     labels: xValues_{{$id}},
     datasets: [{
+      label: 'Node degree distribution',
       data: yValues_{{$id}},
       spanGaps: true,
       pointRadius: 0,
+      // showLine: false // disable for a single dataset
     }]
   },
   options: {
@@ -110,7 +130,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
               display: true,
               text: 'Degree',
               font: {
-                  size: 15
+                  size: 17
               }
           },
       },
@@ -119,7 +139,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
               display: true,
               text: 'Number of nodes',
               font: {
-                  size: 15
+                  size: 17
               }
           },
           ticks: {
@@ -136,7 +156,12 @@ var chart_{{$id}} = new Chart("{{$id}}", {
           text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
         },
         legend: {
-            display: false
+            display: true,
+            labels: {
+              font: {
+                size: 20
+              }
+            }
         },
         decimation: {
           enabled: true,
@@ -144,6 +169,5 @@ var chart_{{$id}} = new Chart("{{$id}}", {
     },
     animation: false,
   },
-  responsive: true,
 });
 </script>

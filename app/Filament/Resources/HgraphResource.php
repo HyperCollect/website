@@ -22,6 +22,8 @@ use Filament\Infolists\Components\ViewEntry;
 use App\Filament\Resources\HgraphResource\Pages;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\Alignment;
 
 class HgraphResource extends Resource
 {
@@ -138,15 +140,15 @@ class HgraphResource extends Resource
                     Tabs\Tab::make('Data Exploration')
                         ->schema([
                             Infolists\Components\TextEntry::make('')
-                            ->default(fn() => new HtmlString('<strong>Node degree distribution</strong>'))
+                            // ->default(fn() => new HtmlString('<strong>Node degree distribution</strong>'))
                             ->columnSpanFull(),
                             ViewEntry::make('dnodes')->view('filament.infolists.chart-line-nodes')->columnSpanFull(),
                             Infolists\Components\TextEntry::make('')
-                            ->default(fn() => new HtmlString('<strong>Node degree distribution log log scale</strong>'))
+                            // ->default(fn() => new HtmlString('<strong>Node degree distribution log log scale</strong>'))
                             ->columnSpanFull(),
                             ViewEntry::make('dnodeshist')->view('filament.infolists.chart-scatter')->columnSpanFull(),
                             Infolists\Components\TextEntry::make('')
-                            ->default(fn() => new HtmlString('<strong>Hedges size distribution</strong>'))
+                            // ->default(fn() => new HtmlString('<strong>Hedges size distribution</strong>'))
                             ->columnSpanFull(),
                             ViewEntry::make('dedges')->view('filament.infolists.chart-line-edges')->columnSpanFull(),                  
                         ])
@@ -167,7 +169,8 @@ class HgraphResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('author')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('summary')
@@ -185,32 +188,38 @@ class HgraphResource extends Resource
                     ->numeric()
                     ->label('|V|')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('edges')
                     ->numeric()
                     ->label('|E|')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment(Alignment::End),                    
                 Tables\Columns\TextColumn::make('dnodemax')
                     ->numeric()
                     ->label(fn() => new HtmlString('d<sub>max</sub>'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dedgemax')
                     ->numeric()
                     ->label(fn() => new HtmlString('e<sub>max</sub>'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dnodeavg')
                     ->numeric()
                     ->label(fn() => new HtmlString('d<sub>avg</sub>'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dedgeavg')
                     ->numeric()
                     ->label(fn() => new HtmlString('e<sub>avg</sub>'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->label('Created At')

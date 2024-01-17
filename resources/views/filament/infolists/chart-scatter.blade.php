@@ -1,11 +1,12 @@
 @php
 $id = uniqid();
 @endphp
-<div class="block">
-  <canvas id="{{$id}}" style="width:80%;max-width:700px"></canvas>
+<div class="blockCanvas">
+  <canvas id="{{$id}}" class="mycanvas"></canvas>
   <div id="buttons_{{$id}}">
     <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
     <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
+    <button class="chartbutton" onclick="downloadAsPng{{$id}}()">Download as PNG</button>
   </div>
 </div>
 
@@ -19,6 +20,13 @@ function toggleZoom{{$id}}() {
   chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
   chart.update();
   topRightAlert('Zoom ' + zoomStatus(chart));
+}
+function downloadAsPng{{$id}}() {
+  var imagelink = document.createElement('a');
+  var canvas = document.getElementById("{{$id}}");
+  imagelink.href = canvas.toDataURL("image/png");
+  imagelink.download = "{{$id}}.png";
+  imagelink.click();
 }
 </script>
 <script>
@@ -40,6 +48,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
   data: {
     // labels: xValues_{{$id}},
     datasets: [{
+      label: "Node degree distribution - log log scale",
       data: b,
       // data: [
       //   {x: 1, y: 1}
@@ -54,9 +63,9 @@ var chart_{{$id}} = new Chart("{{$id}}", {
         x: {
           title: {
               display: true,
-              text: 'Degree',
+              text: 'Node degree',
               font: {
-                  size: 15
+                  size: 17
               }
           },
           ticks: {
@@ -67,9 +76,9 @@ var chart_{{$id}} = new Chart("{{$id}}", {
         y: {
           title: {
               display: true,
-              text: 'Number of nodes',
+              text: 'Frequency',
               font: {
-                  size: 15
+                  size: 17
               }
           },
           type: 'logarithmic',
@@ -83,7 +92,12 @@ var chart_{{$id}} = new Chart("{{$id}}", {
           text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
         },
         legend: {
-            display: false
+            display: true,
+            labels: {
+              font: {
+                size: 20
+              }
+            }
         },
     },
     animation: false,

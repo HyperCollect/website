@@ -22,3 +22,4 @@ composer.phar
 venv/
 sys.so
 certbot/
+psql/
