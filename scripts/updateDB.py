@@ -23,6 +23,8 @@ GIT_T= os.getenv("GIT_TOKEN")
 # d = dirname(dirname(dirname(abspath(__file__))))
 # datasets = d + "/datasets"
 
+print("Executed at: ", datetime.datetime.now())
+
 d = dirname(dirname(abspath(__file__)))
 datasets = d + "/storage/app/public/datasets"
 
@@ -39,15 +41,7 @@ if len(result) == 0:
                     " VALUES ('"+str(myuuid_empty_category)+"', '"+str(category)+"')")
     cursor.execute(add_category)
     cnxEmpty.commit()
-# except Exception as err:
-#     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-#         print("Something is wrong with your user name or password")
-#     elif err.errno == errorcode.ER_BAD_DB_ERROR:
-#         print("Database does not exist")
-#     else:
-#         print(err)
-# else:
-#     cnxEmpty.close()
+cnxEmpty.close()
 
 for filename in os.listdir(datasets):
     f = os.path.join(datasets, filename)
@@ -189,9 +183,6 @@ for filename in os.listdir(datasets):
                         update_hgraph_stats = ("UPDATE hgraphs SET nodes = '"+str(nodes)+"', edges = '"+str(edges)+"' WHERE name = '"+str(filename)+"'")
                         cursor.execute(update_hgraph_stats)
                         cnx.commit()
-                # print first row of table hgraphs
-                # cursor = cnx.cursor()
-                # update_hgraph = ("UPDATE hgraphs SET description = '"+str(read)+"' WHERE id = '"+str(myuuid)+"'")
-                # cursor.execute(update_hgraph)
-                # cnx.commit()
+                
+                cnx.close()
                 

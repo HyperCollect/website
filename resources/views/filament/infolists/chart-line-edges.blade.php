@@ -19,7 +19,12 @@ function toggleZoom{{$id}}() {
   var chart = window.chart_{{$id}};
   chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
   chart.update();
-  topRightAlert('Zoom ' + zoomStatus(chart));
+  if (chart.options.plugins.zoom.zoom.wheel.enabled) {
+    topRightAlert('Zoom enabled');
+  } else {
+    topRightAlert('Zoom disabled');
+  }
+  // topRightAlert('Zoom ' + zoomStatus(chart));
 }
 function downloadAsPng{{$id}}() {
   var imagelink = document.createElement('a');
@@ -28,6 +33,25 @@ function downloadAsPng{{$id}}() {
   imagelink.download = "{{$id}}.png";
   imagelink.click();
 }
+const zoomOptions_{{$id}} = {
+  // limits: {
+  //   y: {min: 0, max: 200, minRange: 50}
+  // },
+  pan: {
+    enabled: true,
+    mode: 'xy',
+  },
+  zoom: {
+    wheel: {
+      enabled: true,
+    },
+    pinch: {
+      enabled: true,
+    },
+    mode: 'xy',
+  }
+};
+// const zoomStatus = (chart) => (zoomOptions_{{$id}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
 </script>
 <script>
 const yValues_{{$id}} = [{{ $getState() }}];
@@ -69,11 +93,11 @@ var chart_{{$id}} = new Chart("{{$id}}", {
       }
     },
     plugins: {
-        zoom: zoomOptions,
+        zoom: zoomOptions_{{$id}},
         title: {
           display: false,
           position: 'bottom',
-          text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
+          // text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
         },
         legend: {
           display: true,

@@ -23,3 +23,5 @@ venv/
 sys.so
 certbot/
 psql/
+debugbar/
+```

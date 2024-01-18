@@ -123,9 +123,9 @@ html {
 <div class="tablecontainer">
     <div class="about-section">
         <div class="row loghi">
-                <!-- <img src="assets/imgs/logoISIS.png" style="width:50%"> -->
-                <img src="assets/imgs/logoUnisa.png" style="width:35%">
-                <img src="assets/imgs/logoUnito.png" style="width:50%">
+                <img src="{{ asset('assets/imgs/logoISIS.png') }}" style="width:50%">
+                <!-- <img src="assets/imgs/logoUnisa.png" style="width:35%"> -->
+                <img src="{{ asset('assets/imgs/logoUnito.png') }}" style="width:50%"> 
         </div>
         <!-- <div class="row loghi">
             <img src="assets/imgs/logoInformatica.png" style="width:75%">
@@ -141,7 +141,7 @@ html {
     <div class="row">
         <div class="column">
             <div class="card">
-            <img src="assets/imgs/ddevin.png" class="avatar" >
+            <img src="{{ asset('assets/imgs/ddevin.png') }}" class="avatar" >
             <div class="container">
                 <h2>Daniele De Vinco</h2>
                 <p class="title">2°year Ph.D.</p>
@@ -155,7 +155,7 @@ html {
 
         <div class="column">
             <div class="card">
-            <img src="assets/imgs/alessant.png" class="avatar">
+            <img src="{{ asset('assets/imgs/alessant.png') }}" class="avatar">
             <div class="container">
                 <h2>Alessia Antelmi</h2>
                 <p class="title">Researcher (RTD-A)</p>
@@ -169,7 +169,7 @@ html {
 
         <div class="column">
             <div class="card">
-            <img src="assets/imgs/cspagn.png" class="avatar">
+            <img src="{{ asset('assets/imgs/cspagn.png') }}" class="avatar">
             <div class="container">
                 <h2>Carmine Spagnuolo</h2>
                 <p class="title">Assistant Professor</p>

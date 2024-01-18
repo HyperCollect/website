@@ -1,6 +1,3 @@
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.7"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
@@ -44,14 +41,29 @@ $id = uniqid();
 </style>
 
 <div class="blockCanvas">
+  <!-- <p id="title_{{$id}}" style="display:none;">Test title</p> -->
   <canvas id="{{$id}}" class="mycanvas"></canvas>
   <div id="buttons_{{$id}}">
+    <!-- <button class="chartbutton" onclick="toggleChart{{$id}}()">Toggle Chart</button> -->
     <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
     <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
     <button class="chartbutton" onclick="downloadAsPng{{$id}}()">Download as PNG</button>
   </div>
 </div>
 <script>
+// function toggleChart{{$id}}() {
+//   var x = document.getElementById("{{$id}}");
+//   var y = document.getElementById("title_{{$id}}");
+//   if (x.style.display === "none") {
+//     x.style.display = "block";
+//     y.style.display = "none";
+//   } else {
+//     x.style.display = "none";
+//     y.style.display = "block";
+//     var chart = window.chart_{{$id}};
+//     y.innerHTML = chart.data.datasets[0].label;
+//   }
+// }
 function resetZoom{{$id}}() {
   var chart = window.chart_{{$id}};
   chart.resetZoom();
@@ -60,7 +72,12 @@ function toggleZoom{{$id}}() {
   var chart = window.chart_{{$id}};
   chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
   chart.update();
-  topRightAlert('Zoom ' + zoomStatus(chart));
+  if (chart.options.plugins.zoom.zoom.wheel.enabled) {
+    topRightAlert('Zoom enabled');
+  } else {
+    topRightAlert('Zoom disabled');
+  }
+  // topRightAlert('Zoom ' + zoomStatus(chart));
 }
 function downloadAsPng{{$id}}() {
   var imagelink = document.createElement('a');
@@ -69,11 +86,7 @@ function downloadAsPng{{$id}}() {
   imagelink.download = "{{$id}}.png";
   imagelink.click();
 }
-</script>
-
-<!-- COMMON TO EVERY CHART-->
-<script>
-const zoomOptions = {
+const zoomOptions_{{$id}} = {
   // limits: {
   //   y: {min: 0, max: 200, minRange: 50}
   // },
@@ -91,7 +104,12 @@ const zoomOptions = {
     mode: 'xy',
   }
 };
-const zoomStatus = (chart) => (zoomOptions.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
+// const zoomStatus = (chart) => (zoomOptions_{{$id}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
+</script>
+
+<!-- COMMON TO EVERY CHART-->
+<script>
+
 
 function topRightAlert(title) {
   Swal.fire({
@@ -149,11 +167,11 @@ var chart_{{$id}} = new Chart("{{$id}}", {
     },
     plugins: {
         // Container for zoom options
-        zoom: zoomOptions,
+        zoom: zoomOptions_{{$id}},
         title: {
           display: false,
           position: 'bottom',
-          text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
+          // text: (ctx) => 'Zoom: ' + zoomStatus(ctx.chart)
         },
         legend: {
             display: true,

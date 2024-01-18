@@ -72,17 +72,21 @@ php artisan schedule:work
 Look at the cron job section to set up a cron job on your machine.
 
 # Docker build
+To start or stop the docker compose with:
 ```bash
 docker compose up -d
+docker compose down (-v to remove volumes)
 ```
 
-create your db
+If you want to force a rebuild of the images after a change, run:
 ```bash
-sudo docker exec -it <mysqlcontainer> mysql -u <username> -p
-create database <dbname>;
+docker compose up --build 
 ```
 
-add Suppressor and SimpleHypergraph packages to julia through package manager
+If you want to see the logs, run:
+```bash
+docker compose logs -f -t
+```
 
 To use the julia script, compile a custom system image for PyJulia, run
 ```bash
@@ -96,7 +100,7 @@ docker compose build name_service
 
 To run a command inside the docker
 ```bash
-sudo docker exec -it hgraph php artisan schedule:test
+sudo docker exec -it hgraph php artisan <command>
 ```
 
 # cron job
