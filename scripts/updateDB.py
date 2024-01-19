@@ -1,7 +1,6 @@
 import psycopg
 import os
 from os.path import dirname, abspath
-# load environment variables
 from dotenv import load_dotenv
 load_dotenv()
 import uuid
@@ -28,6 +27,8 @@ print("Executed at: ", datetime.datetime.now())
 d = dirname(dirname(abspath(__file__)))
 datasets = d + "/storage/app/public/datasets"
 
+############################
+# add empty category if not present
 cnxEmpty = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
 category = "empty"
 search_empty = ("SELECT * FROM categories WHERE type = '"+category+"'")
@@ -42,15 +43,42 @@ if len(result) == 0:
     cursor.execute(add_category)
     cnxEmpty.commit()
 cnxEmpty.close()
+############################
+
+############################
+# delete old hgraphs who are not in the repo anymore
+cnx = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
+search_hgraph = ("SELECT name FROM hgraphs")
+cursor = cnx.cursor()
+cursor.execute(search_hgraph)
+result = cursor.fetchall()
+cnx.close()
+list_hgraph_db = []
+list_hgraph_repo = []
+for row in result:
+    list_hgraph_db.append(row[0])
+for filename in os.listdir(datasets):
+    f = os.path.join(datasets, filename)
+    if os.path.isdir(f) and not filename.startswith(".") and not filename == "scripts":
+        list_hgraph_repo.append(filename)
+for hgraph in list_hgraph_db:
+    if hgraph not in list_hgraph_repo:
+        print("deleting ", hgraph)
+        cnx = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
+        cursor = cnx.cursor()
+        delete_hgraph = ("DELETE FROM hgraphs WHERE name = '"+str(hgraph)+"'")
+        cursor.execute(delete_hgraph)
+        cnx.commit()
+        cnx.close()
+############################
 
 for filename in os.listdir(datasets):
     f = os.path.join(datasets, filename)
     # checking if it is a directory and not a hidden directory
-    if os.path.isdir(f) and not filename.startswith(".") and not filename == "scripts":
-        for files in os.listdir(f):
-            # inside each folder | file.hg fild.md       
-            if files.endswith(".md"):
-                apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/README.md"
+    if os.path.isdir(f) and not filename.startswith(".") and not filename == "scripts":        
+        for files in os.listdir(f):      
+            if files.endswith(".hgf"):
+                apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/" + filename + ".hgf"
                 response = requests.get(apiCall, auth=(GIT_U, GIT_T))
                 res = response.json()
                 cnx = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
@@ -185,4 +213,10 @@ for filename in os.listdir(datasets):
                         cnx.commit()
                 
                 cnx.close()
+
+            if files.endswith(".md"):
+                print("md file")
+
+            if files.endswith(".info"):
+                print("info file")
                 
