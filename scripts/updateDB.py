@@ -28,6 +28,17 @@ d = dirname(dirname(abspath(__file__)))
 datasets = d + "/storage/app/public/datasets"
 
 ############################
+# delete old categories who are not in the repo anymore
+cnx = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
+cursor = cnx.cursor()
+delete_old_categories = ("""DELETE FROM categories 
+                            WHERE id NOT IN (SELECT category_id FROM hgraphs_categories)""")
+cursor.execute(delete_old_categories)
+cnx.commit()
+cnx.close()
+############################
+
+############################
 # add empty category if not present
 cnxEmpty = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
 category = "empty"
@@ -72,15 +83,6 @@ for hgraph in list_hgraph_db:
         cnx.close()
 ############################
 
-############################
-# delete old categories who are not in the repo anymore
-cnx = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
-delete_old_categories = ("DELETE FROM categories WHERE id NOT IN (SELECT category_id FROM hgraphs_categories)")
-cursor = cnx.cursor()
-cursor.execute(delete_old_categories)
-cnx.close()
-############################
-
 for filename in os.listdir(datasets):
     f = os.path.join(datasets, filename)
     # checking if it is a directory and not a hidden directory
@@ -92,6 +94,7 @@ for filename in os.listdir(datasets):
         cursor.execute(search_hgraph)
         result = cursor.fetchall()
 
+        # if the hgraph is not in the database
         if len(result) == 0:
             apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/" + filename + ".hgf"
             response = requests.get(apiCall, auth=(GIT_U, GIT_T))

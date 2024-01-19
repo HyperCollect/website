@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
             ->sendOutputTo(storage_path('logs/gitPull.log'));
         $schedule->exec('python3 ./scripts/updateDB.py')
             ->everyTenMinutes()
+            ->withoutOverlapping(20)
             ->appendOutputTo(storage_path('logs/updateDB.log'));
     }
 
