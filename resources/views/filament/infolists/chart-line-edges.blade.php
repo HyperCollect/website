@@ -55,17 +55,27 @@ const zoomOptions_{{$id}} = {
 </script>
 <script>
 const yValues_{{$id}} = [{{ $getState() }}];
-const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
+// const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
+const a{{$id}} = yValues_{{$id}}[0]
+
+// convert object to array
+const k{{$id}} = Object.keys(a{{$id}})//.map((key) => [Number(key), a[key]]);
+const v{{$id}} = Object.values(a{{$id}})//.map((key) => [Number(key), a[key]]);
+
+const b{{$id}} = k{{$id}}.map((key, index) => {
+    return {x: k{{$id}}[index], y: v{{$id}}[index]}
+})
 
 var chart_{{$id}} = new Chart("{{$id}}", {
-  type: "line",
+  type: "bar",
   data: {
-    labels: xValues_{{$id}},
+    // labels: xValues_{{$id}},
     datasets: [{
       label: 'Hedges size distribution',
-      data: yValues_{{$id}},
+      data: b{{$id}},
       spanGaps: true,
       pointRadius: 0,
+      backgroundColor: 'rgba(255, 0, 0, 0.5)',
     }]
   },
   options: {
@@ -73,7 +83,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
       y: {
           title: {
               display: true,
-              text: 'Size',
+              text: 'Count',
               font: {
                   size: 17
               }
@@ -82,7 +92,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
       x: {
           title: {
               display: true,
-              text: 'Number of hyperedges',
+              text: 'Size of hyperedges',
               font: {
                   size: 17
               }

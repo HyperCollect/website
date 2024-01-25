@@ -103,6 +103,11 @@ To run a command inside the docker
 sudo docker exec -it hgraph php artisan <command>
 ```
 
+Enter in postgres container
+```bash
+docker exec -it website-postgres-1 psql <namedb> <username>
+```
+
 # cron job
 
 To run the scheduler with the scripts, is good practice to set up a cron job this way:

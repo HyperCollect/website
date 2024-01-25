@@ -99,6 +99,7 @@ for filename in os.listdir(datasets):
             apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/" + filename + ".hgf"
             response = requests.get(apiCall, auth=(GIT_U, GIT_T))
             res = response.json()
+            myuuid = uuid.uuid4()
 
             last = len(res)-1
             first_commit = res[last]

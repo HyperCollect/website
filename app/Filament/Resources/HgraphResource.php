@@ -142,7 +142,7 @@ class HgraphResource extends Resource
                             Infolists\Components\TextEntry::make('')
                             // ->default(fn() => new HtmlString('<strong>Node degree distribution</strong>'))
                             ->columnSpanFull(),
-                            ViewEntry::make('dnodes')->view('filament.infolists.chart-line-nodes')->columnSpanFull(),
+                            ViewEntry::make('dnodeshist')->view('filament.infolists.chart-line-nodes')->columnSpanFull(),
                             Infolists\Components\TextEntry::make('')
                             // ->default(fn() => new HtmlString('<strong>Node degree distribution log log scale</strong>'))
                             ->columnSpanFull(),
@@ -150,7 +150,7 @@ class HgraphResource extends Resource
                             Infolists\Components\TextEntry::make('')
                             // ->default(fn() => new HtmlString('<strong>Hedges size distribution</strong>'))
                             ->columnSpanFull(),
-                            ViewEntry::make('dedges')->view('filament.infolists.chart-line-edges')->columnSpanFull(),                  
+                            ViewEntry::make('dedgeshist')->view('filament.infolists.chart-line-edges')->columnSpanFull(),                  
                         ])
                     // Tabs\Tab::make('Download')
                     //     ->schema([
