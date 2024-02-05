@@ -66,6 +66,11 @@
             </tr>
             <tr>
                 <td>
+                    d<sub>med</sub>
+                </td>
+                <td>Median node degree</td>
+            <tr>
+                <td>
                     e<sub>max</sub>
                 </td>
                 <td>Maximum hyperedge size</td>
@@ -75,6 +80,12 @@
                     e<sub>avg</sub>
                 </td>
                 <td>Average hyperedge size</td>
+            </tr>
+            <tr>
+                <td>
+                    e<sub>med</sub>
+                </td>
+                <td>Median hyperedge size</td>
             </tr>
         </tbody>
     </table>

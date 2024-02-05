@@ -60,62 +60,75 @@ class LatestHgraphs extends BaseWidget
     {
         return [
             Tables\Columns\TextColumn::make('name')
-            ->searchable()
-            ->weight(FontWeight::Bold),
+                ->searchable()
+                ->size(TextColumn\TextColumnSize::Large)
+                ->weight(FontWeight::Bold),
             Tables\Columns\TextColumn::make('author')
-            ->searchable(),
+                ->size(TextColumn\TextColumnSize::Large)
+                ->searchable(),
             Tables\Columns\TextColumn::make('summary')
-            ->searchable()
-            ->toggleable(isToggledHiddenByDefault: true),
+                ->size(TextColumn\TextColumnSize::Large)
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('domain')
-                    ->label('Category')
-                    ->badge()
-                    ->searchable()
-                    ->toggleable(),
+                ->label('Category')
+                ->size(TextColumn\TextColumnSize::Large)
+                ->badge()
+                ->searchable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('categories.type')
                 ->label('Type')    
+                ->size(TextColumn\TextColumnSize::Large)
                 ->badge()
                 ->searchable(),
             Tables\Columns\TextColumn::make('nodes')
                 ->label('|V|')
+                ->size(TextColumn\TextColumnSize::Large)
                 ->numeric()
                 ->searchable()
                 ->sortable()
                 ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('edges')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
                 ->label('|E|')
                 ->sortable()
                 ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('updated_at')
                 ->label('Updated at')
+                ->size(TextColumn\TextColumnSize::Large)
                 ->dateTime()
                 ->sortable()
                 ->toggleable(),
             Tables\Columns\TextColumn::make('created_at')
                 ->label('Created at')
+                ->size(TextColumn\TextColumnSize::Large)
                 ->dateTime()
                 ->sortable()
                 ->toggleable(),
             Tables\Columns\TextColumn::make('dnodemax')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->label(fn() => new HtmlString('d<sub>max</sub>'))
                 ->sortable()
                 ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('dedgemax')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
                 ->label(fn() => new HtmlString('e<sub>max</sub>'))
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true)
                 ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('dnodeavg')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
                 ->label(fn() => new HtmlString('d<sub>avg</sub>'))
                 ->sortable() ->toggleable(isToggledHiddenByDefault: true)
                 ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('dedgeavg')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
                 ->label(fn() => new HtmlString('e<sub>avg</sub>'))
                 ->sortable() ->toggleable(isToggledHiddenByDefault: true)
                 ->alignment(Alignment::End)

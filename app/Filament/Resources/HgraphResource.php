@@ -24,6 +24,8 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Alignment;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Infolists\Components\TextEntry;
 
 class HgraphResource extends Resource
 {
@@ -100,7 +102,9 @@ class HgraphResource extends Resource
                             Components\Grid::make(4)
                             ->schema([
                                 Components\Group::make([
-                                    Infolists\Components\TextEntry::make('name')->badge(),
+                                    Infolists\Components\TextEntry::make('name')
+                                    // ->size(TextEntry\TextEntrySize::Large)
+                                    ->badge(),
                                     Infolists\Components\TextEntry::make('categories.type')->label('Categories')->badge(),
                                     Infolists\Components\TextEntry::make('author')->badge()->color('success'),
                                     Infolists\Components\TextEntry::make('authorurl')->badge()->color('success')->url(
@@ -169,34 +173,42 @@ class HgraphResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->searchable()
                     ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('author')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('summary')
                     ->searchable()
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('domain')
                     ->label('Category')
                     ->badge()
                     ->searchable()
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('categories.type')->label('Type')
                     ->badge()
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nodes')
                     ->numeric()
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->label('|V|')
                     ->searchable()
                     ->sortable()
                     ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('edges')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->numeric()
                     ->label('|E|')
                     ->searchable()
                     ->sortable()
                     ->alignment(Alignment::End),                    
                 Tables\Columns\TextColumn::make('dnodemax')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->numeric()
                     ->label(fn() => new HtmlString('d<sub>max</sub>'))
                     ->searchable()
@@ -204,28 +216,49 @@ class HgraphResource extends Resource
                     ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dedgemax')
                     ->numeric()
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->label(fn() => new HtmlString('e<sub>max</sub>'))
                     ->searchable()
                     ->sortable()
                     ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dnodeavg')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->numeric()
                     ->label(fn() => new HtmlString('d<sub>avg</sub>'))
                     ->searchable()
                     ->sortable()
                     ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dedgeavg')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->numeric()
                     ->label(fn() => new HtmlString('e<sub>avg</sub>'))
                     ->searchable()
                     ->sortable()
                     ->alignment(Alignment::End),
+                Tables\Columns\TextColumn::make('dnodemedian')
+                    ->size(TextColumn\TextColumnSize::Large)
+                    ->numeric()
+                    ->label(fn() => new HtmlString('d<sub>med</sub>'))
+                    ->searchable()
+                    ->sortable()
+                    ->alignment(Alignment::End)
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('dedgemedian')
+                    ->size(TextColumn\TextColumnSize::Large)
+                    ->numeric()
+                    ->label(fn() => new HtmlString('e<sub>med</sub>'))
+                    ->searchable()
+                    ->sortable()
+                    ->alignment(Alignment::End)
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->dateTime()
                     ->label('Created At')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->size(TextColumn\TextColumnSize::Large)
                     ->dateTime()
                     ->label('Updated At')
                     ->sortable()
