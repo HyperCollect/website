@@ -31,8 +31,8 @@ return new class extends Migration
             $table->longText('dedges')->nullable();
             $table->longText('dnodeshist')->nullable();
             $table->longText('dedgeshist')->nullable();
-            $table->longText('dnodemedian')->nullable();
-            $table->longText('dedgemedian')->nullable();
+            $table->float('dnodemedian')->unsigned()->nullable();
+            $table->float('dedgemedian')->unsigned()->nullable();
             $table->timestamps();
         });
     }

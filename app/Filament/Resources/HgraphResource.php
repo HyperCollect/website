@@ -301,6 +301,32 @@ class HgraphResource extends Resource
                             $data['edges2'],
                             fn (Builder $query, $n): Builder => $query->where('edges', '>=', $n),
                         );
+                }),
+                Filter::make('dnodemedian')
+                ->form([
+                    TextInput::make('dnodemedian2')
+                    ->numeric()
+                    ->label('Node degree median'),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['dnodemedian2'],
+                            fn (Builder $query, $n): Builder => $query->where('dnodemedian', '>=', $n),
+                        );
+                }),
+                Filter::make('dedgemedian')
+                ->form([
+                    TextInput::make('dedgemedian2')
+                    ->numeric()
+                    ->label('Edge degree median'),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['dedgemedian2'],
+                            fn (Builder $query, $n): Builder => $query->where('dedgemedian', '>=', $n),
+                        );
                 })
             ])
             ->actions([
