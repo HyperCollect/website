@@ -155,7 +155,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
               display: true,
               text: 'Count',
               font: {
-                  size: 17
+                  size: 20
               }
           },
       },
@@ -164,7 +164,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
               display: true,
               text: 'Node degree',
               font: {
-                  size: 17
+                  size: 20
               }
           },
           ticks: {

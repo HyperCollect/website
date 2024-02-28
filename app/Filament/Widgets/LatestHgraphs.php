@@ -65,7 +65,8 @@ class LatestHgraphs extends BaseWidget
                 ->weight(FontWeight::Bold),
             Tables\Columns\TextColumn::make('author')
                 ->size(TextColumn\TextColumnSize::Large)
-                ->searchable(),
+                ->searchable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('summary')
                 ->size(TextColumn\TextColumnSize::Large)
                 ->searchable()

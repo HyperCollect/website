@@ -120,17 +120,27 @@ class HgraphResource extends Resource
                                     Infolists\Components\TextEntry::make('edges')
                                     ->label('|E|')
                                     ->badge(),
+                                ]),
+                                Components\Group::make([
                                     Infolists\Components\TextEntry::make('dnodemax')
                                     ->label(fn() => new HtmlString('d<sub>max</sub>'))
                                     ->badge(),
                                     Infolists\Components\TextEntry::make('dnodeavg')
                                     ->label(fn() => new HtmlString('d<sub>avg</sub>'))
                                     ->badge(),
+                                    Infolists\Components\TextEntry::make('dnodemedian')
+                                    ->label(fn() => new HtmlString('d<sub>med</sub>'))
+                                    ->badge(),
+                                ]),
+                                Components\Group::make([
                                     Infolists\Components\TextEntry::make('dedgemax')
                                     ->label(fn() => new HtmlString('e<sub>max</sub>'))
                                     ->badge(),
                                     Infolists\Components\TextEntry::make('dedgeavg')
                                     ->label(fn() => new HtmlString('e<sub>avg</sub>'))
+                                    ->badge(),
+                                    Infolists\Components\TextEntry::make('dedgemedian')
+                                    ->label(fn() => new HtmlString('e<sub>med</sub>'))
                                     ->badge(),
                                 ]),
                             ])
@@ -178,7 +188,8 @@ class HgraphResource extends Resource
                     ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('author')
                     ->size(TextColumn\TextColumnSize::Large)
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('summary')
                     ->searchable()
                     ->size(TextColumn\TextColumnSize::Large)
@@ -306,7 +317,7 @@ class HgraphResource extends Resource
                 ->form([
                     TextInput::make('dnodemedian2')
                     ->numeric()
-                    ->label('Node degree median'),
+                    ->label('Node degree median >='),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -319,7 +330,7 @@ class HgraphResource extends Resource
                 ->form([
                     TextInput::make('dedgemedian2')
                     ->numeric()
-                    ->label('Edge degree median'),
+                    ->label('Hedge size median >='),
                 ])
                 ->query(function (Builder $query, array $data): Builder {
                     return $query
@@ -327,7 +338,33 @@ class HgraphResource extends Resource
                             $data['dedgemedian2'],
                             fn (Builder $query, $n): Builder => $query->where('dedgemedian', '>=', $n),
                         );
-                })
+                }),
+                Filter::make('dnodemax')
+                ->form([
+                    TextInput::make('dnodemax2')
+                    ->numeric()
+                    ->label('Node degree max >='),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['dnodemax2'],
+                            fn (Builder $query, $n): Builder => $query->where('dnodemax', '>=', $n),
+                        );
+                }),
+                Filter::make('dedgemax')
+                ->form([
+                    TextInput::make('dedgemax2')
+                    ->numeric()
+                    ->label('Hedge size max >='),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['dedgemax2'],
+                            fn (Builder $query, $n): Builder => $query->where('dedgemax', '>=', $n),
+                        );
+                }),
             ])
             ->actions([
                 ViewAction::make(),

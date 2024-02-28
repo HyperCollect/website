@@ -89,7 +89,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
               display: true,
               text: 'Node degree',
               font: {
-                  size: 17
+                  size: 20
               }
           },
           ticks: {
@@ -102,7 +102,7 @@ var chart_{{$id}} = new Chart("{{$id}}", {
               display: true,
               text: 'Frequency',
               font: {
-                  size: 17
+                  size: 20
               }
           },
           type: 'logarithmic',
