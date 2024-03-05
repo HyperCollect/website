@@ -7,17 +7,19 @@ from dotenv import load_dotenv
 load_dotenv()
 import uuid
 import requests
+import datetime
+from julia import Julia
+jl = Julia(sysimage="scripts/sys.so")
 from julia import Main
 
-
-Main.include("./scripts/hypergraphs.jl")
+Main.include("scripts/hypergraphs.jl")
 
 DB_U= os.getenv("DB_USERNAME")
 DB_P= os.getenv("DB_PASSWORD")
 DB_D= os.getenv("DB_DATABASE")
+DB_H= os.getenv("DB_HOST")
 GIT_U= os.getenv("GIT_USERNAME")
 GIT_T= os.getenv("GIT_TOKEN")
-
 # repo in same root
 # d = dirname(dirname(dirname(abspath(__file__))))
 # datasets = d + "/datasets"
@@ -26,21 +28,53 @@ d = dirname(dirname(abspath(__file__)))
 datasets = d + "/storage/app/public/datasets"
 # print(d)
 
+# check if the database exists
+# try:
+#     print("Executed at: ", datetime.datetime.now())
+#     cnx = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P, database=DB_D)
+#     cnx.close()
+#     print("Database exists\n------------------")
+# except mysql.connector.Error as err:
+#     if err.errno == errorcode.ER_BAD_DB_ERROR:
+#         # create the database
+#         cnx = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P)
+#         cursor = cnx.cursor()
+#         cursor.execute("CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(DB_D))
+#         cnx.close()
+#         cnx = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P, database=DB_D)
+#         cursor = cnx.cursor()
+#         cursor.execute("CREATE TABLE hgraphs (id VARCHAR(255) PRIMARY KEY, name VARCHAR(255), summary VARCHAR(255), domain VARCHAR(255), author VARCHAR(255), authorurl VARCHAR(255), nodes INT, edges INT, dnodemax INT, dedgemax INT, dnodeavg FLOAT, dedgeavg FLOAT, dnodes VARCHAR(255), dedges VARCHAR(255), dedgeshist VARCHAR(255), dnodeshist VARCHAR(255), url VARCHAR(255), description VARCHAR(255), created_at DATETIME, updated_at DATETIME)")
+#         cursor.execute("CREATE TABLE categories (id VARCHAR(255) PRIMARY KEY, type VARCHAR(255))")
+#         cursor.execute("CREATE TABLE hgraphs_categories (id VARCHAR(255) PRIMARY KEY, hgraph_id VARCHAR(255), category_id VARCHAR(255))")
+#         cnx.close()
+#         print("Database created\n------------------")
+#     else:
+#         print(err)
+
 # add empty category
-cnxEmpty = mysql.connector.connect(user=DB_U, password=DB_P, database=DB_D)
-category = "empty"
-search_empty = ("SELECT * FROM categories WHERE type = '"+category+"'")
-cursor = cnxEmpty.cursor()
-cursor.execute(search_empty)
-result = cursor.fetchall()
-if len(result) == 0:
-    myuuid_empty_category = uuid.uuid4()
+try:
+    cnxEmpty = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P, database=DB_D)
+    category = "empty"
+    search_empty = ("SELECT * FROM categories WHERE type = '"+category+"'")
     cursor = cnxEmpty.cursor()
-    add_category = ("INSERT INTO categories (id, type)"
-                    " VALUES ('"+str(myuuid_empty_category)+"', '"+str(category)+"')")
-    cursor.execute(add_category)
-    cnxEmpty.commit()
-cnxEmpty.close()
+    cursor.execute(search_empty)
+    result = cursor.fetchall()
+    if len(result) == 0:
+        myuuid_empty_category = uuid.uuid4()
+        cursor = cnxEmpty.cursor()
+        add_category = ("INSERT INTO categories (id, type)"
+                        " VALUES ('"+str(myuuid_empty_category)+"', '"+str(category)+"')")
+        cursor.execute(add_category)
+        cnxEmpty.commit()
+except mysql.connector.Error as err:
+    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+        print("Something is wrong with your user name or password")
+    elif err.errno == errorcode.ER_BAD_DB_ERROR:
+        print("Database does not exist")
+    else:
+        print(err)
+else:
+    cnxEmpty.close()
 
 for filename in os.listdir(datasets):
     f = os.path.join(datasets, filename)
@@ -53,7 +87,7 @@ for filename in os.listdir(datasets):
                     apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/README.md"
                     response = requests.get(apiCall, auth=(GIT_U, GIT_T))
                     res = response.json()
-                    cnx = mysql.connector.connect(user=DB_U, password=DB_P, database=DB_D)
+                    cnx = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P, database=DB_D)
                     # sql query to search for the name of the folder
                     search_hgraph = ("SELECT * FROM hgraphs WHERE name = '"+str(filename)+"'")
                     cursor = cnx.cursor()
@@ -80,6 +114,7 @@ for filename in os.listdir(datasets):
                         categories_path = "./storage/app/public/datasets/" + filename + "/categories.info"
                         # if the file is not present, create it
                         categories_empty = "empty"
+                        domain = "empty"
                         if os.path.isfile(categories_path):
                             read = open(categories_path, "r").read()
                             # read = read.replace("\n", ", ")
@@ -87,7 +122,10 @@ for filename in os.listdir(datasets):
                             # read = read[:-2]
                             # categories = str(read)
                             categories = read.split("\n")
-                            for category in categories:
+                            my_domain = categories[0]
+                            domain = my_domain
+                            # exclude first two lines
+                            for category in categories[2:]:
                                 if category == "":
                                     continue
                                 else:
@@ -131,21 +169,21 @@ for filename in os.listdir(datasets):
 
 
 
-                        descr = "storage/datasets/" + filename + "/README.md"
-                        # url = "https://github.com/HypergraphRepository/datasets" + filename + "/" + filename + ".hg"
-                        url = "http://127.0.0.1:8000/download/" + filename
-                        pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
-                        (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
+                        descr = "./storage/datasets/" + filename + "/README.md"
+                        # url = "https://github.com/HypergraphRepository/datasets" + filename + "/" + filename + ".hgf"
+                        url = "https://hypergraphrepository.di.unisa.it/download/" + filename
+                        pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hgf"
+                        (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max, distribution_node_degree_hist, distribution_edge_size_hist) = Main.collect_infos(pathToHg)
                         # sort distribution in ascending order
 
                         distribution_node_degree.sort(reverse=True)
                         distribution_node_degree = ",".join(str(x) for x in distribution_node_degree)
                         distribution_edge_size.sort(reverse=True)
                         distribution_edge_size = ",".join(str(x) for x in distribution_edge_size)
-                        
-                        add_hgraph= ("INSERT INTO hgraphs (id, name, author, authorurl, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, url, description, created_at, updated_at)"
+                        summary = "test summary"
+                        add_hgraph= ("INSERT INTO hgraphs (id, name, summary, domain, author, authorurl, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, dedgeshist, dnodeshist, url, description, created_at, updated_at)"
                                     #  " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
-                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + author_url + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
+                                     " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + str(summary) + "','" + str(domain) + "','" + author + "','" + author_url + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + str(distribution_edge_size_hist) + "','" + str(distribution_node_degree_hist) + "','" + url +"', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
                             # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
                         cursor.execute(add_hgraph)
                         cnx.commit()
@@ -169,7 +207,7 @@ for filename in os.listdir(datasets):
                             cursor.execute(update_hgraph)
                             cnx.commit()
 
-                            pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hg"
+                            pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hgf"
                             (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max) = Main.collect_infos(pathToHg)
                             
                             distribution_node_degree.sort(reverse=True)
@@ -195,3 +233,20 @@ for filename in os.listdir(datasets):
                         print(err)
                 else:
                     cnx.close()
+
+            # if files.endswith(".info"):
+            #     try:
+            #         apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/categories.info"
+            #         response = requests.get(apiCall, auth=(GIT_U, GIT_T))
+            #         res = response.json()
+            #         cnx = mysql.connector.connect(host=DB_H, user=DB_U, password=DB_P, database=DB_D)
+                    
+            #     except mysql.connector.Error as err:
+            #         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            #             print("Something is wrong with your user name or password")
+            #         elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            #             print("Database does not exist")
+            #         else:
+            #             print(err)
+            #     else:
+            #         cnx.close()

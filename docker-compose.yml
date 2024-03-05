@@ -1,0 +1,57 @@
+services:
+    app:
+     build:
+       args:
+         user: isis
+         uid: 1000
+       context: ./
+       dockerfile: Dockerfile
+     image: hgraph
+     container_name: hgraph
+     restart: unless-stopped
+     working_dir: /var/www/
+     volumes:
+       - ./:/var/www
+     networks:
+       - sail
+     depends_on:
+       - postgres
+    nginx:
+      image: nginx:1.25-alpine
+      container_name: hgraph-nginx
+      restart: unless-stopped
+      ports:
+        - 80:80
+        - 443:443
+      volumes:
+        - ./:/var/www
+        - ./docker/nginx:/etc/nginx/conf.d
+        - ./certbot/www/:/var/www/certbot/:ro
+        - ./certbot/conf/:/etc/nginx/ssl/:ro
+      networks:
+        - sail
+    certbot:
+      image: certbot/certbot:latest
+      volumes:
+        - ./certbot/www/:/var/www/certbot/:rw
+        - ./certbot/conf/:/etc/letsencrypt/:rw
+    postgres:
+      image: postgres
+      restart: unless-stopped
+      ports:
+        - '${FORWARD_DB_PORT:-5432}:5432'
+      environment:
+        POSTGRES_DB: '${DB_DATABASE}'
+        POSTGRES_USER: '${DB_USERNAME}'
+        POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      volumes:
+        - sail-postgres:/var/lib/postgresql/data
+        - ./docker/psql/:/docker-entrypoint-initdb.d
+      networks:
+        - sail
+networks:
+    sail:
+        driver: bridge
+volumes:
+    sail-postgres:
+        driver: local

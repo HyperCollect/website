@@ -30,7 +30,14 @@ class StatsOverviewWidget extends BaseWidget
         $max_created_at = DB::table('hgraphs')->max('created_at');
         //get unique category 
         $categories = DB::table('categories')->get()->unique();
-
+        // list of all names of columns of table
+        $columns = DB::getSchemaBuilder()->getColumnListing('hgraphs');
+        // $columns_s = implode(", ", $columns);
+        $desc = "name -> name of hg
+        type -> type of hg
+        a->a\n
+        b->b";
+        // build a string of all columns
         $hraphs_chart = Trend::model(Hgraph::class)
         ->between(
             start: Carbon::createFromFormat('Y-m-d H:i:s',  $min_created_at),
@@ -51,8 +58,9 @@ class StatsOverviewWidget extends BaseWidget
             ),
             Stat::make('ncategories', count($categories))
             ->icon('heroicon-o-eye')
-            ->label('Number of categories')
-            
+            ->label('Number of types'),
+            Stat::make('legend', "")
+            ->view('filament.legend')
         ];
     }
 }

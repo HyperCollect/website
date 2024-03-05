@@ -10,12 +10,15 @@ use App\Models\Communication;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\BadgeColumn;
 use App\Filament\Resources\EventResource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\HgraphResource;
 use Filament\Widgets\TableWidget as BaseWidget;
 use App\Console\Commands\MailNotificationCommand;
+use Illuminate\Support\HtmlString;
 
 class LatestHgraphs extends BaseWidget
 {
@@ -57,46 +60,79 @@ class LatestHgraphs extends BaseWidget
     {
         return [
             Tables\Columns\TextColumn::make('name')
-            ->searchable(),
+                ->searchable()
+                ->size(TextColumn\TextColumnSize::Large)
+                ->weight(FontWeight::Bold),
             Tables\Columns\TextColumn::make('author')
-            ->searchable(),
+                ->size(TextColumn\TextColumnSize::Large)
+                ->searchable()
+                ->toggleable(),
+            Tables\Columns\TextColumn::make('summary')
+                ->size(TextColumn\TextColumnSize::Large)
+                ->searchable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            Tables\Columns\TextColumn::make('domain')
+                ->label('Category')
+                ->size(TextColumn\TextColumnSize::Large)
+                ->badge()
+                ->searchable()
+                ->toggleable(),
             Tables\Columns\TextColumn::make('categories.type')
+                ->label('Type')    
+                ->size(TextColumn\TextColumnSize::Large)
                 ->badge()
                 ->searchable(),
             Tables\Columns\TextColumn::make('nodes')
-                ->label('# Nodes')
+                ->label('|V|')
+                ->size(TextColumn\TextColumnSize::Large)
                 ->numeric()
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+                ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('edges')
                 ->numeric()
-                ->label('# Edges')
-                ->sortable(),
+                ->size(TextColumn\TextColumnSize::Large)
+                ->label('|E|')
+                ->sortable()
+                ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('updated_at')
                 ->label('Updated at')
+                ->size(TextColumn\TextColumnSize::Large)
                 ->dateTime()
                 ->sortable()
                 ->toggleable(),
             Tables\Columns\TextColumn::make('created_at')
                 ->label('Created at')
+                ->size(TextColumn\TextColumnSize::Large)
                 ->dateTime()
                 ->sortable()
                 ->toggleable(),
             Tables\Columns\TextColumn::make('dnodemax')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
                 ->toggleable(isToggledHiddenByDefault: true)
-                ->label('Degree Node Max')
-                ->sortable(),
+                ->label(fn() => new HtmlString('d<sub>max</sub>'))
+                ->sortable()
+                ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('dedgemax')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
+                ->label(fn() => new HtmlString('e<sub>max</sub>'))
                 ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
+                ->toggleable(isToggledHiddenByDefault: true)
+                ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('dnodeavg')
                 ->numeric()
-                ->sortable() ->toggleable(isToggledHiddenByDefault: true),
+                ->size(TextColumn\TextColumnSize::Large)
+                ->label(fn() => new HtmlString('d<sub>avg</sub>'))
+                ->sortable() ->toggleable(isToggledHiddenByDefault: true)
+                ->alignment(Alignment::End),
             Tables\Columns\TextColumn::make('dedgeavg')
                 ->numeric()
+                ->size(TextColumn\TextColumnSize::Large)
+                ->label(fn() => new HtmlString('e<sub>avg</sub>'))
                 ->sortable() ->toggleable(isToggledHiddenByDefault: true)
+                ->alignment(Alignment::End)
         ];
     }
 

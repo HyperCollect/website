@@ -88,22 +88,35 @@ function listEdgeDegree(hg)
     return sizes
 end
 
+function get_median(v)
+    n = length(v)
+    if n % 2 == 0
+        return (v[div(n,2)] + v[div(n,2)+1]) / 2
+    else
+        return v[div(n,2) + 1]
+    end
+end
+
 function infos(hg)
     nodes = nhv(hg)
     edges = nhe(hg) 
     avg_node_degree = sum([length(gethyperedges(hg, v)) for v in 1:nodes]) / nodes
     avg_edge_degree = sum([length(getvertices(hg, he)) for he in 1:edges]) / edges
-    # distribution_node_degree = node_degree_histogram(hg, normalized=false)
-    # distribution_edge_size = edge_degree_histogram(hg, normalized=false)
+    distribution_node_degree_hist = node_degree_histogram(hg, normalized=false)
+    distribution_edge_size_hist = edge_degree_histogram(hg, normalized=false)
     distribution_node_degree = listNodeDegree(hg)
     distribution_edge_size = listEdgeDegree(hg)
     node_degree_max = maximum(distribution_node_degree)
     edge_degree_max = maximum(distribution_edge_size)
-    return (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max)
+    node_degree_median = get_median(sort(distribution_node_degree))
+    edge_degree_median = get_median(sort(distribution_edge_size))
+    return (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, 
+            node_degree_max, edge_degree_max, distribution_node_degree_hist, distribution_edge_size_hist,
+            node_degree_median, edge_degree_median)
 end
 
 function collect_infos(path)
-    hg = build_hg(path)[1]
+    hg = hg_load(path)
     info = infos(hg)
     return info
 end
