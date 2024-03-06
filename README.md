@@ -72,6 +72,35 @@ php artisan schedule:work
 Look at the cron job section to set up a cron job on your machine.
 
 # Docker build
+
+Change hgraph.conf file to point nginx to localhost
+```bash
+server {
+    listen       80;
+    server_name  localhost;
+
+    root /var/www/public;
+    index index.php index.html;
+    
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass app:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+        gzip_static on;
+    }
+}
+```
+
 To start or stop the docker compose with:
 ```bash
 docker compose up -d (start in background)
