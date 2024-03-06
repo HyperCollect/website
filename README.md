@@ -74,13 +74,28 @@ Look at the cron job section to set up a cron job on your machine.
 # Docker build
 To start or stop the docker compose with:
 ```bash
-docker compose up -d
+docker compose up -d (start in background)
 docker compose down (-v to remove volumes)
 ```
+After the dockers are up, you can run the migration to initialize the database and start a shell in the container
+```bash
+docker exec -it hgraph php artisan migrate:fresh
+docker exec -it hgraph bash
+```
+Then, while in the hgraph docker (in the folder var/www), you have to copy (or move) the custom julia image to the scripts folder
+```bash
+cp ../../../sysimage/sys.so scripts/
+python3 scripts/updateDB.py
+```
 
-If you want to force a rebuild of the images after a change, run:
+If you want to rebuild images after a change, run:
 ```bash
 docker compose up --build 
+```
+
+If you want to rebuild images without cache, run:
+```bash
+docker compose build --no-cache
 ```
 
 If you want to see the logs, run:
