@@ -41,3 +41,7 @@ WORKDIR /var/www
 USER $user
 RUN python3 -m pip install --user julia --break-system-packages
 RUN python3 -c "exec(\"import julia\njulia.install()\")"
+RUN julia -e "using Pkg; Pkg.add(\"SimpleHypergraphs\"); Pkg.add(\"Suppressor\")"
+
+WORKDIR /sysimage
+RUN python3 -m julia.sysimage sys.so

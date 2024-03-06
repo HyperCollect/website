@@ -72,15 +72,59 @@ php artisan schedule:work
 Look at the cron job section to set up a cron job on your machine.
 
 # Docker build
-To start or stop the docker compose with:
+
+Change hgraph.conf file to point nginx to localhost
 ```bash
-docker compose up -d
-docker compose down (-v to remove volumes)
+server {
+    listen       80;
+    server_name  localhost;
+
+    root /var/www/public;
+    index index.php index.html;
+    
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass app:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+        gzip_static on;
+    }
+}
 ```
 
-If you want to force a rebuild of the images after a change, run:
+To start or stop the docker compose with:
+```bash
+docker compose up -d (start in background)
+docker compose down (-v to remove volumes)
+```
+After the dockers are up, you can run the migration to initialize the database and start a shell in the container
+```bash
+docker exec -it hgraph php artisan migrate:fresh
+docker exec -it hgraph bash
+```
+Then, while in the hgraph docker (in the folder var/www), you have to copy (or move) the custom julia image to the scripts folder
+```bash
+cp ../../../sysimage/sys.so scripts/
+python3 scripts/updateDB.py
+```
+
+If you want to rebuild images after a change, run:
 ```bash
 docker compose up --build 
+```
+
+If you want to rebuild images without cache, run:
+```bash
+docker compose build --no-cache
 ```
 
 If you want to see the logs, run:
