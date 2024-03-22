@@ -22,7 +22,7 @@ You can deeply investigate all the infos about datasets at [Repository](https://
 ```bash
 composer install
 php artisan migrate:fresh
-cd website/storage/app/public && git clone https://github.com/HypergraphRepository/datasets && git config credential.helper store 
+cd website/storage/app/public && git clone https://github.com/HypergraphRepository/datasets && git clone https://github.com/geon0325/MoCHy.git && git config credential.helper store 
 php artisan storage:link
 php artisan serve
 ```
@@ -116,10 +116,15 @@ Then, while in the hgraph docker (in the folder var/www), you have to copy (or m
 cp ../../../sysimage/sys.so scripts/
 python3 scripts/updateDB.py
 ```
+To compute motifs, while in the mochy  you can run the following command:
+```bash
+mv 
+```
 
 If you want to rebuild images after a change, run:
 ```bash
 docker compose up --build 
+docker-compose up -d --build <service_name> --no-cache
 ```
 
 If you want to rebuild images without cache, run:
@@ -161,4 +166,13 @@ crontab -e
 and insert the following line:
 ```bash
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+To renew certificate with certbot, run:
+```bash
+docker compose run --rm certbot renew
+```
+You can also add a cron job to renew the certificate automatically:
+```bash
+@monthly docker compose -f /path-to-your-project/docker-compose.yml run --rm certbot renew
 ```
