@@ -116,10 +116,6 @@ Then, while in the hgraph docker (in the folder var/www), you have to copy (or m
 cp ../../../sysimage/sys.so scripts/
 python3 scripts/updateDB.py
 ```
-To compute motifs, while in the mochy  you can run the following command:
-```bash
-mv 
-```
 
 If you want to rebuild images after a change, run:
 ```bash
