@@ -164,7 +164,8 @@ class HgraphResource extends Resource
                             Infolists\Components\TextEntry::make('')
                             // ->default(fn() => new HtmlString('<strong>Hedges size distribution</strong>'))
                             ->columnSpanFull(),
-                            ViewEntry::make('dedgeshist')->view('filament.infolists.chart-line-edges')->columnSpanFull(),                  
+                            ViewEntry::make('dedgeshist')->view('filament.infolists.chart-line-edges')->columnSpanFull(),
+                            ViewEntry::make('motifsdist')->view('filament.infolists.chart-line-motifs')->columnSpanFull(),
                         ])
                     // Tabs\Tab::make('Download')
                     //     ->schema([
@@ -272,6 +273,11 @@ class HgraphResource extends Resource
                     ->size(TextColumn\TextColumnSize::Large)
                     ->dateTime()
                     ->label('Updated At')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('motifsdist')
+                    ->size(TextColumn\TextColumnSize::Large)
+                    ->label('motifs')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

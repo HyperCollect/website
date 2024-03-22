@@ -88,7 +88,6 @@ for filename in os.listdir(datasets):
     # checking if it is a directory and not a hidden directory
     if os.path.isdir(f) and not filename.startswith(".") and not filename == "scripts":
         cnx = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
-        # sql query to search for the name of the folder
         search_hgraph = ("SELECT * FROM hgraphs WHERE name = '"+str(filename)+"'")
         cursor = cnx.cursor()
         cursor.execute(search_hgraph)
@@ -163,7 +162,6 @@ for filename in os.listdir(datasets):
                 cursor.execute(search_category)
                 result_category = cursor.fetchall()
                 myuuid_hgraph_category = uuid.uuid4()
-                # print(result_category)
                 myuuid_category = result_category[0][0]
                 add_hgraph_category = ("INSERT INTO hgraphs_categories (id, hgraph_id, category_id)"
                                         " VALUES ('"+str(myuuid_hgraph_category)+"', '"+str(myuuid)+"', '"+str(myuuid_category)+"')")
@@ -171,22 +169,16 @@ for filename in os.listdir(datasets):
             ###############
 
             descr = "./storage/datasets/" + filename + "/README.md"
-            # url = "https://github.com/HypergraphRepository/datasets" + filename + "/" + filename + ".hgf"
             url = "https://hypergraphrepository.di.unisa.it/download/" + filename
             pathToHg = "./storage/app/public/datasets/" + filename + "/" + filename + ".hgf"
             (nodes, edges, avg_node_degree, avg_edge_degree, distribution_node_degree, distribution_edge_size, node_degree_max, edge_degree_max, distribution_node_degree_hist, distribution_edge_size_hist, dnodemedian, dedgemedian) = Main.collect_infos(pathToHg)
-            # sort distribution in ascending order
-
             distribution_node_degree.sort(reverse=True)
             distribution_node_degree = ",".join(str(x) for x in distribution_node_degree)
             distribution_edge_size.sort(reverse=True)
             distribution_edge_size = ",".join(str(x) for x in distribution_edge_size)
             summary = "test summary"
-            # add median to node and hegde
             add_hgraph= ("INSERT INTO hgraphs (id, name, summary, domain, author, authorurl, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, dedgeshist, dnodeshist, dnodemedian, dedgemedian, url, description, created_at, updated_at)"
-                        #  " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
                             " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + str(summary) + "','" + str(domain) + "','" + author + "','" + author_url + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + str(distribution_edge_size_hist) + "','" + str(distribution_node_degree_hist) + "','" + str(dnodemedian) +"', '" + str(dedgemedian) +"', '" + url + "', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
-                # " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + author + "','" + str(nodes) + "','" + str(edges) + "','" + url +"', '" + categories + "','" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")    
             cursor.execute(add_hgraph)
             cnx.commit()
             cnx.close()
@@ -221,6 +213,9 @@ for filename in os.listdir(datasets):
                         update_hgraph_stats = ("UPDATE hgraphs SET nodes = '"+str(nodes)+"', edges = '"+str(edges)+"' WHERE name = '"+str(filename)+"'")
                         cursor.execute(update_hgraph_stats)
                         cnx.commit()
+                        # remove existing motifs file to be able to calculate again
+                        if os.path.exists("./storage/app/public/Mochy/motifs/" + filename + ".txt"):
+                            os.remove("./storage/app/public/Mochy/motifs/" + filename + ".txt")
                     
                 if files.endswith(".md"):
                     apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/README.md"

@@ -18,6 +18,29 @@ RUN apt-get update && apt-get install -y \
     wget \
     libpq-dev
 
+# MoCHy dependencies
+RUN apt-get --yes -qq install \
+                      bzip2 \
+                      cmake \
+                      cpio \
+                      curl \
+                      g++ \
+                      gcc \
+                      gfortran \
+                      git \
+                      gosu \
+                      libblas-dev \
+                      liblapack-dev \
+                      libopenmpi-dev \
+                      openmpi-bin \
+                      python3-dev \
+                      python3-pip \
+                      virtualenv \
+                      wget \
+                      zlib1g-dev \
+                      vim       \
+                      htop      
+
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
