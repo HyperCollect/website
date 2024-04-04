@@ -6,6 +6,9 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import uuid
+import datetime
+
+print("Executed at: ", datetime.datetime.now())
 
 DB_U= os.getenv("DB_USERNAME")
 DB_P= os.getenv("DB_PASSWORD")
@@ -13,7 +16,7 @@ DB_D= os.getenv("DB_DATABASE")
 DB_H= os.getenv("DB_HOST")
 
 d = dirname(dirname(abspath(__file__)))
-mochy_path = d + "/storage/app/public/Mochy"
+mochy_path = d + "/storage/app/public/MoCHy"
 datasets = d + "/storage/app/public/datasets"
 
 if not os.path.exists(mochy_path):
@@ -57,3 +60,13 @@ for subdir, dirs, files in os.walk(datasets):
 						update_hgraph = ("UPDATE hgraphs SET updated_at = NOW() WHERE name = '"+str(name)+"'")
 						cursor.execute(update_hgraph)
 						cnx.commit()
+			else:
+				print("Motifs already calculated for ", output_filename)
+				# check if value is "" or the hypergraph has been updated
+				
+				# cnx = psycopg.connect(host=DB_H, user=DB_U, password=DB_P, dbname=DB_D)
+				# cursor = cnx.cursor()
+				# search_motifs = ("SELECT motifsdist FROM hgraphs WHERE name = '"+str(output_filename)+"'")
+				# cursor.execute(search_motifs)
+				# motifs = cursor.fetchone()
+				
