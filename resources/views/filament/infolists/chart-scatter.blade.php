@@ -55,32 +55,31 @@ const zoomOptions_{{$id}} = {
 </script>
 <script>
 const array_{{$id}} = [{{ $getState() }}];
+let b = [];
 // const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
+for(let i = 0; i < array_{{$id}}.length; i++){
+    const a = array_{{$id}}[i];
 
-const a = array_{{$id}}[0]
+    // convert object to array
+    const k = Object.keys(a)//.map((key) => [Number(key), a[key]]);
+    const v = Object.values(a)//.map((key) => [Number(key), a[key]]);
 
-// convert object to array
-const k = Object.keys(a)//.map((key) => [Number(key), a[key]]);
-const v = Object.values(a)//.map((key) => [Number(key), a[key]]);
+    b[i] = {
+        label: "Node degree distribution - log log scale n°" + String(i),
+        data: k.map((key, index) => {
+            return {x: k[index], y: v[index]}
+        }),
+        borderColor: "black",
+        borderWidth: 1,
+    };
+}
 
-const b = k.map((key, index) => {
-    return {x: k[index], y: v[index]}
-})
 
 var chart_{{$id}} = new Chart("{{$id}}", {
   type: "scatter",
   data: {
     // labels: xValues_{{$id}},
-    datasets: [{
-      label: "Node degree distribution - log log scale",
-      data: b,
-      // data: [
-      //   {x: 1, y: 1}
-      // ],
-      borderColor: "black",
-      // backgroundColor: '#9BD0F5',
-      borderWidth: 1,
-    }]
+    datasets: b,
   },
   options: {
     scales: {

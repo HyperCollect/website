@@ -19,6 +19,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Infolists\Components\ViewEntry;
+use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\HgraphResource\Pages;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
@@ -171,9 +172,9 @@ class HgraphResource extends Resource
                     //     ->schema([
                     //         Infolists\Components\TextEntry::make('name')
                     //     ]),
-                   
+
                 ])
-               
+
                 // Infolists\Components\TextEntry::make('email'),
                 // Infolists\Components\TextEntry::make('notes')
                 //     ->columnSpanFull(),
@@ -218,7 +219,7 @@ class HgraphResource extends Resource
                     ->label('|E|')
                     ->searchable()
                     ->sortable()
-                    ->alignment(Alignment::End),                    
+                    ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dnodemax')
                     ->size(TextColumn\TextColumnSize::Large)
                     ->numeric()
@@ -386,9 +387,14 @@ class HgraphResource extends Resource
                                 })
             ])
             ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
-                // ]),
+                Tables\Actions\BulkAction::make('viewSelected')
+                ->action(function (Collection $records){
+                    dump($records);
+                    //session()->flash('selectedRecords', $records);
+                    //return redirect()->route('filament.pages.view-selected');
+                })
+                ->label('View Selected')
+                ->color('primary'),
             ]);
     }
 
