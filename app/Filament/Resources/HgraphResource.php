@@ -186,6 +186,7 @@ class HgraphResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->size(TextColumn\TextColumnSize::Large)
                     ->searchable()
+                    ->tooltip(fn($record) => $record->summary)
                     ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('author')
                     ->size(TextColumn\TextColumnSize::Large)
@@ -378,6 +379,7 @@ class HgraphResource extends Resource
                 Tables\Actions\Action::make('download')
                                 ->label(
                                     fn ($record):string => 'Download ('.round(filesize(storage_path('/app/public/datasets/'.$record->name.'/'.$record->name.'.hgf'))/1000000, 2).' MB)'
+                                    # $record->downloads . ' downloads' 
                                 )
                                 ->icon('heroicon-o-arrow-down-tray')
                                 ->color('success')

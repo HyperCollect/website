@@ -1,6 +1,7 @@
 # Info
 
 Test the live project at [Site](http://hypergraphrepository.di.unisa.it/)
+If you are using Arc Browser, you can use the dark mode boost [Boost](https://arc.net/boost/6C5AFA0C-C15D-4772-B8EA-3F398DEC8FAA)
 
 ## Datasets info
 
@@ -25,6 +26,7 @@ php artisan migrate:fresh
 cd website/storage/app/public && git clone https://github.com/HypergraphRepository/datasets && git clone https://github.com/geon0325/MoCHy.git && git config credential.helper store 
 php artisan storage:link
 php artisan serve
+php artisan icons:cache
 ```
 
 On first run, if you open the website, you will need to generate the api key through the button on landing page.
