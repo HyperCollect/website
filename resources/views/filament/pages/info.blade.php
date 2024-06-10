@@ -66,7 +66,7 @@ html {
   display: inline-block;
   padding: 8px;
   /* color: white; */
-  background-color: #4CAF50;
+  background-color: #ffa280;
   text-align: center;
   cursor: pointer;
   width: 100%;
@@ -80,11 +80,11 @@ html {
 }
 
 .button:hover {
-  background-color: #3e8e41;
+  background-color: #ff7c4d;
 }
 
 .avatar {
-  width: 75%;
+  width: 50%;
   border-radius: 50%;
   margin: auto;
   /* width: 100%; */
