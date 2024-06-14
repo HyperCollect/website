@@ -388,13 +388,20 @@ class HgraphResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkAction::make('viewSelected')
-                ->action(function (Collection $records){
-                    dump($records);
+                ->action(function ($records){
+                    //dump($records);
+                    //$recordIds = $records->pluck('id')->toArray();
+                    //$url = route('filament.pages.compare', ['recordIds' => implode(',', $recordIds)]);
+                    //return redirect($url);
+                    $selectedIds = $records->pluck('id')->toArray();
+                    $selectedIdsString = implode(',', $selectedIds);
+                    return redirect()->route('filament.pages.compare', ['ids' => $selectedIdsString]);
                     //session()->flash('selectedRecords', $records);
-                    //return redirect()->route('filament.pages.view-selected');
+                    //return redirect()->route('filament.pages.compare');
                 })
                 ->label('View Selected')
-                ->color('primary'),
+                ->color('primary')
+                ->deselectRecordsAfterCompletion(),
             ]);
     }
 

@@ -30,4 +30,4 @@ Route::get('/download/{file}', function ($file) {
     return response()->json(['message' => 'File not found!'], 404);
 });
 
-Route::get('/filament/view-selected-hgraphs', [Controller::class, 'show'])->name('filament.pages.view-selected-hgraphs');
+Route::get('/compare/{ids}', [Controller::class, 'show'])->name('filament.pages.compare');
