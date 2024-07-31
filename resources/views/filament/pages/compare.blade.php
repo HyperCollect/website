@@ -1,33 +1,21 @@
-@php
-$id1 = uniqid();
-$id2 = uniqid();
-$id3 = uniqid();
-@endphp
 <x-filament-panels::page>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@php
+$id = uniqid();
+
+    $names = $selectedRecords->pluck('name')->toArray();
+    $dnodeshists = $selectedRecords->pluck('dnodeshist')->toArray();
+    $dedgeshists = $selectedRecords->pluck('dedgeshist')->toArray();
+@endphp
     <div class="container">
         <h1>Selected Records</h1>
         <script>
-            @dump($selectedRecords)
-            let names = [
-                @foreach($selectedRecords as $record)
-                    "{{ $record->name }}",
-                @endforeach
-            ];
-            let dnodeshists = [
-            @foreach($selectedRecords as $record)
-                {{ $record->dnodeshist }},
-            @endforeach
-        ];
-        let dedgeshists = [
-            @foreach($selectedRecords as $record)
-                {{ $record->dedgeshist }},
-            @endforeach
-        ];
-        //console.log(dedgeshists);
+            let names = @json($names);
+            let dnodeshists =@json($dnodeshists);
+            let dedgeshists = @json($dedgeshists);
         </script>
         <style>
             .chartbutton{
@@ -65,35 +53,35 @@ $id3 = uniqid();
             </style>
 
             <div class="blockCanvas">
-              <!-- <p id="title_{{$id1}}" style="display:none;">Test title</p> -->
-              <canvas id="{{$id1}}" class="mycanvas"></canvas>
-              <div id="buttons_{{$id1}}">
-                <!-- <button class="chartbutton" onclick="toggleChart{{$id1}}()">Toggle Chart</button> -->
-                <button class="chartbutton" onclick="resetZoom{{$id1}}()">Reset Zoom</button>
-                <button class="chartbutton" onclick="toggleZoom{{$id1}}()">Toggle Zoom</button>
-                <button class="chartbutton" onclick="downloadAsPng{{$id1}}()">Download as PNG</button>
+              <!-- <p id="title_{{$id}}" style="display:none;">Test title</p> -->
+              <canvas id="{{$id}}" class="mycanvas"></canvas>
+              <div id="buttons_{{$id}}">
+                <!-- <button class="chartbutton" onclick="toggleChart{{$id}}()">Toggle Chart</button> -->
+                <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
+                <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
+                <button class="chartbutton" onclick="downloadAsPng{{$id}}()">Download as PNG</button>
               </div>
             </div>
             <script>
-            // function toggleChart{{$id1}}() {
-            //   var x = document.getElementById("{{$id1}}");
-            //   var y = document.getElementById("title_{{$id1}}");
+            // function toggleChart{{$id}}() {
+            //   var x = document.getElementById("{{$id}}");
+            //   var y = document.getElementById("title_{{$id}}");
             //   if (x.style.display === "none") {
             //     x.style.display = "block";
             //     y.style.display = "none";
             //   } else {
             //     x.style.display = "none";
             //     y.style.display = "block";
-            //     var chart = window.chart_{{$id1}};
+            //     var chart = window.chart_{{$id}};
             //     y.innerHTML = chart.data.datasets[0].label;
             //   }
             // }
-            function resetZoom{{$id1}}() {
-              var chart = window.chart_{{$id1}};
+            function resetZoom{{$id}}() {
+              var chart = window.chart_{{$id}};
               chart.resetZoom();
             }
-            function toggleZoom{{$id1}}() {
-              var chart = window.chart_{{$id1}};
+            function toggleZoom{{$id}}() {
+              var chart = window.chart_{{$id}};
               chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
               chart.update();
               if (chart.options.plugins.zoom.zoom.wheel.enabled) {
@@ -103,14 +91,14 @@ $id3 = uniqid();
               }
               // topRightAlert('Zoom ' + zoomStatus(chart));
             }
-            function downloadAsPng{{$id1}}() {
+            function downloadAsPng{{$id}}() {
               var imagelink = document.createElement('a');
-              var canvas = document.getElementById("{{$id1}}");
+              var canvas = document.getElementById("{{$id}}");
               imagelink.href = canvas.toDataURL("image/png");
-              imagelink.download = "{{$id1}}.png";
+              imagelink.download = "{{$id}}.png";
               imagelink.click();
             }
-            const zoomOptions_{{$id1}} = {
+            const zoomOptions_{{$id}} = {
               // limits: {
               //   y: {min: 0, max: 200, minRange: 50}
               // },
@@ -128,7 +116,7 @@ $id3 = uniqid();
                 mode: 'xy',
               }
             };
-            // const zoomStatus = (chart) => (zoomOptions_{{$id1}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
+            // const zoomStatus = (chart) => (zoomOptions_{{$id}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
             </script>
 
             <!-- COMMON TO EVERY CHART-->
@@ -150,36 +138,46 @@ $id3 = uniqid();
 
 
             <script>
-            const yValues_{{$id1}} = dnodeshists;
-            let b{{$id1}} = [];
+            const yValues_{{$id}} = dnodeshists;
+            let b{{$id}} = [];
 
-            for(let i = 0; i < yValues_{{$id1}}.length; i++){
-                const a{{$id1}} = yValues_{{$id1}}[i];
+            for(let i = 0; i < yValues_{{$id}}.length; i++){
+                const a{{$id}} = yValues_{{$id}}[i];
+
+                let clean_a{{$id}} = a{{$id}}.split('{').join('').split('}').join('');
+                let objClean = clean_a{{$id}}.split(',').reduce((acc, pair)=>{
+                    let [key, value] = pair.split(':').map(item => item.trim());
+                    acc[key] = value;
+                    return acc;
+                }, {});
 
                 //Convert objetct to array
-                const k{{$id1}} = Object.keys(a{{$id1}})//.map((key) => [Number(key), a[key]]);
-                const v{{$id1}} = Object.values(a{{$id1}})//.map((key) => [Number(key), a[key]]);
+                const k{{$id}} = Object.keys(objClean)//.map((key) => [Number(key), a[key]]);
+                const v{{$id}} = Object.values(objClean)//.map((key) => [Number(key), a[key]]);
 
-                b{{$id1}}[i] = {
+                //console.log('postelaboration: ', v{{$id}});
+
+                b{{$id}}[i] = {
                     label: 'Node degree distribution ' + names[i],
-                    data: k{{$id1}}.map((key, index) => {
-                            return {x: k{{$id1}}[index], y: v{{$id1}}[index]}
+                    data: k{{$id}}.map((key, index) => {
+                            return {x: k{{$id}}[index], y: v{{$id}}[index]}
                         }),
                     spanGaps: true,
                     pointRadius: 0,
                 };
+
             }
-            // const xValues_{{$id1}} = new Array(yValues_{{$id1}}.length).fill(1).map( (_, i) => i+1 )
+            // const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
 
             // convert object to array
-            var chart_{{$id1}} = new Chart("{{$id1}}", {
+            var chart_{{$id}} = new Chart("{{$id}}", {
               type: "bar",
               data: {
-                // labels: xValues_{{$id1}},
-                datasets: b{{$id1}},
+                // labels: xValues_{{$id}},
+                datasets: b{{$id}},
                 // {
                 //   label: 'Node degree distribution',
-                //   data: b{{$id1}},
+                //   data: b{{$id}},
                 //   spanGaps: true,
                 //   pointRadius: 0,
                 //   type: 'line',
@@ -211,7 +209,7 @@ $id3 = uniqid();
                 },
                 plugins: {
                     // Container for zoom options
-                    zoom: zoomOptions_{{$id1}},
+                    zoom: zoomOptions_{{$id}},
                     title: {
                       display: false,
                       position: 'bottom',
@@ -233,22 +231,25 @@ $id3 = uniqid();
               },
             });
             </script>
+            @php
+            $id = uniqid();
+            @endphp
             <div class="blockCanvas">
-              <canvas id="{{$id2}}" class="mycanvas"></canvas>
-              <div id="buttons_{{$id2}}">
-                <button class="chartbutton" onclick="resetZoom{{$id2}}()">Reset Zoom</button>
-                <button class="chartbutton" onclick="toggleZoom{{$id2}}()">Toggle Zoom</button>
-                <button class="chartbutton" onclick="downloadAsPng{{$id2}}()">Download as PNG</button>
+              <canvas id="{{$id}}" class="mycanvas"></canvas>
+              <div id="buttons_{{$id}}">
+                <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
+                <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
+                <button class="chartbutton" onclick="downloadAsPng{{$id}}()">Download as PNG</button>
               </div>
             </div>
 
             <script>
-            function resetZoom{{$id2}}() {
-              var chart = window.chart_{{$id2}};
+            function resetZoom{{$id}}() {
+              var chart = window.chart_{{$id}};
               chart.resetZoom();
             }
-            function toggleZoom{{$id2}}() {
-              var chart = window.chart_{{$id2}};
+            function toggleZoom{{$id}}() {
+              var chart = window.chart_{{$id}};
               chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
               chart.update();
               if (chart.options.plugins.zoom.zoom.wheel.enabled) {
@@ -258,14 +259,14 @@ $id3 = uniqid();
               }
               // topRightAlert('Zoom ' + zoomStatus(chart));
             }
-            function downloadAsPng{{$id2}}() {
+            function downloadAsPng{{$id}}() {
               var imagelink = document.createElement('a');
-              var canvas = document.getElementById("{{$id2}}");
+              var canvas = document.getElementById("{{$id}}");
               imagelink.href = canvas.toDataURL("image/png");
-              imagelink.download = "{{$id2}}.png";
+              imagelink.download = "{{$id}}.png";
               imagelink.click();
             }
-            const zoomOptions_{{$id2}} = {
+            const zoomOptions_{{$id}} = {
               // limits: {
               //   y: {min: 0, max: 200, minRange: 50}
               // },
@@ -283,18 +284,24 @@ $id3 = uniqid();
                 mode: 'xy',
               }
             };
-            // const zoomStatus = (chart) => (zoomOptions_{{$id2}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
+            // const zoomStatus = (chart) => (zoomOptions_{{$id}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
             </script>
             <script>
-            const array_{{$id2}} = dnodeshists;
+            const array_{{$id}} = dnodeshists;
             let b = [];
-            // const xValues_{{$id2}} = new Array(yValues_{{$id2}}.length).fill(1).map( (_, i) => i+1 )
-            for(let i = 0; i < array_{{$id2}}.length; i++){
-                const a = array_{{$id2}}[i];
+            // const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
+            for(let i = 0; i < array_{{$id}}.length; i++){
+                const a = array_{{$id}}[i];
 
+                let clean_a{{$id}} = a.split('{').join('').split('}').join('');
+                let objClean = clean_a{{$id}}.split(',').reduce((acc, pair)=>{
+                    let [key, value] = pair.split(':').map(item => item.trim());
+                    acc[key] = value;
+                    return acc;
+                }, {});
                 // convert object to array
-                const k = Object.keys(a)//.map((key) => [Number(key), a[key]]);
-                const v = Object.values(a)//.map((key) => [Number(key), a[key]]);
+                const k = Object.keys(objClean)//.map((key) => [Number(key), a[key]]);
+                const v = Object.values(objClean)//.map((key) => [Number(key), a[key]]);
 
                 b[i] = {
                     label: "Node degree distribution - log log scale " + names[i],
@@ -306,10 +313,10 @@ $id3 = uniqid();
             }
 
 
-            var chart_{{$id2}} = new Chart("{{$id2}}", {
+            var chart_{{$id}} = new Chart("{{$id}}", {
               type: "scatter",
               data: {
-                // labels: xValues_{{$id2}},
+                // labels: xValues_{{$id}},
                 datasets: b,
               },
               options: {
@@ -339,7 +346,7 @@ $id3 = uniqid();
                     },
                 },
                 plugins: {
-                    zoom: zoomOptions_{{$id2}},
+                    zoom: zoomOptions_{{$id}},
                     title: {
                       display: false,
                       position: 'bottom',
@@ -359,21 +366,25 @@ $id3 = uniqid();
               responsive: true,
             });
             </script>
+            @php
+            $id = uniqid();
+            @endphp
+
             <div class="blockCanvas">
-              <canvas id="{{$id3}}" class="mycanvas"></canvas>
-              <div id="buttons_{{$id3}}">
-                <button class="chartbutton" onclick="resetZoom{{$id3}}()">Reset Zoom</button>
-                <button class="chartbutton" onclick="toggleZoom{{$id3}}()">Toggle Zoom</button>
-                <button class="chartbutton" onclick="downloadAsPng{{$id3}}()">Download as PNG</button>
+              <canvas id="{{$id}}" class="mycanvas"></canvas>
+              <div id="buttons_{{$id}}">
+                <button class="chartbutton" onclick="resetZoom{{$id}}()">Reset Zoom</button>
+                <button class="chartbutton" onclick="toggleZoom{{$id}}()">Toggle Zoom</button>
+                <button class="chartbutton" onclick="downloadAsPng{{$id}}()">Download as PNG</button>
               </div>
             </div>
             <script>
-            function resetZoom{{$id3}}() {
-              var chart = window.chart_{{$id3}};
+            function resetZoom{{$id}}() {
+              var chart = window.chart_{{$id}};
               chart.resetZoom();
             }
-            function toggleZoom{{$id3}}() {
-              var chart = window.chart_{{$id3}};
+            function toggleZoom{{$id}}() {
+              var chart = window.chart_{{$id}};
               chart.options.plugins.zoom.zoom.wheel.enabled = !chart.options.plugins.zoom.zoom.wheel.enabled;
               chart.update();
               if (chart.options.plugins.zoom.zoom.wheel.enabled) {
@@ -383,14 +394,14 @@ $id3 = uniqid();
               }
               // topRightAlert('Zoom ' + zoomStatus(chart));
             }
-            function downloadAsPng{{$id3}}() {
+            function downloadAsPng{{$id}}() {
               var imagelink = document.createElement('a');
-              var canvas = document.getElementById("{{$id3}}");
+              var canvas = document.getElementById("{{$id}}");
               imagelink.href = canvas.toDataURL("image/png");
-              imagelink.download = "{{$id3}}.png";
+              imagelink.download = "{{$id}}.png";
               imagelink.click();
             }
-            const zoomOptions_{{$id3}} = {
+            const zoomOptions_{{$id}} = {
               // limits: {
               //   y: {min: 0, max: 200, minRange: 50}
               // },
@@ -408,35 +419,42 @@ $id3 = uniqid();
                 mode: 'xy',
               }
             };
-            // const zoomStatus = (chart) => (zoomOptions_{{$id3}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
+            // const zoomStatus = (chart) => (zoomOptions_{{$id}}.zoom.wheel.enabled ? 'enabled' : 'disabled') + ' (' + chart.getZoomLevel() + 'x)';
             </script>
             <script>
-            const yValues_{{$id3}} = dedgeshists;
-            let b{{$id3}} = [];
+            const yValues_{{$id}} = dedgeshists;
+            let b{{$id}} = [];
 
-            for(let i = 0; i < yValues_{{$id3}}.length; i++){
-                // const xValues_{{$id3}} = new Array(yValues_{{$id3}}.length).fill(1).map( (_, i) => i+1 )
-                const a{{$id3}} = yValues_{{$id3}}[i];
+            for(let i = 0; i < yValues_{{$id}}.length; i++){
+                // const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
+                const a{{$id}} = yValues_{{$id}}[i];
+
+                let clean_a{{$id}} = a{{$id}}.split('{').join('').split('}').join('');
+                let objClean = clean_a{{$id}}.split(',').reduce((acc, pair)=>{
+                    let [key, value] = pair.split(':').map(item => item.trim());
+                    acc[key] = value;
+                    return acc;
+                }, {});
 
                 // convert object to array
-                const k{{$id3}} = Object.keys(a{{$id3}});//.map((key) => [Number(key), a[key]]);
-                const v{{$id3}} = Object.values(a{{$id3}});//.map((key) => [Number(key), a[key]]);
+                const k{{$id}} = Object.keys(objClean);//.map((key) => [Number(key), a[key]]);
+                const v{{$id}} = Object.values(objClean);//.map((key) => [Number(key), a[key]]);
 
-                b{{$id3}}[i] = {
+                b{{$id}}[i] = {
                     label: 'Hedges size distribution ' + names[i],
-                    data: k{{$id3}}.map((key, index) => {
-                        return {x: k{{$id3}}[index], y: v{{$id3}}[index]}
+                    data: k{{$id}}.map((key, index) => {
+                        return {x: k{{$id}}[index], y: v{{$id}}[index]}
                     }),
                     spanGaps: true,
                     pointRadius: 0,
                 }
             }
 
-            var chart_{{$id3}} = new Chart("{{$id3}}", {
+            var chart_{{$id}} = new Chart("{{$id}}", {
               type: "bar",
               data: {
-                // labels: xValues_{{$id3}},
-                datasets: b{{$id3}},
+                // labels: xValues_{{$id}},
+                datasets: b{{$id}},
               },
               options: {
                 scales: {
@@ -463,7 +481,7 @@ $id3 = uniqid();
                   }
                 },
                 plugins: {
-                    zoom: zoomOptions_{{$id3}},
+                    zoom: zoomOptions_{{$id}},
                     title: {
                       display: false,
                       position: 'bottom',

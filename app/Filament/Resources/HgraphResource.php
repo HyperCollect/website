@@ -394,8 +394,9 @@ class HgraphResource extends Resource
                     //$url = route('filament.pages.compare', ['recordIds' => implode(',', $recordIds)]);
                     //return redirect($url);
                     $selectedIds = $records->pluck('id')->toArray();
-                    $selectedIdsString = implode(',', $selectedIds);
-                    return redirect()->route('filament.pages.compare', ['ids' => $selectedIdsString]);
+                    //$selectedIdsString = implode(',', $selectedIds);
+                    session(['bulkActionData' => $selectedIds]);
+                    return redirect()->route('filament.admin.pages.compare');
                     //session()->flash('selectedRecords', $records);
                     //return redirect()->route('filament.pages.compare');
                 })
