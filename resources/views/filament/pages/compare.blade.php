@@ -11,7 +11,6 @@ $id = uniqid();
     $dedgeshists = $selectedRecords->pluck('dedgeshist')->toArray();
 @endphp
     <div class="container">
-        <h1>Selected Records</h1>
         <script>
             let names = @json($names);
             let dnodeshists =@json($dnodeshists);

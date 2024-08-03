@@ -19,7 +19,6 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Infolists\Components\ViewEntry;
-use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\HgraphResource\Pages;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
@@ -389,18 +388,11 @@ class HgraphResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkAction::make('viewSelected')
                 ->action(function ($records){
-                    //dump($records);
-                    //$recordIds = $records->pluck('id')->toArray();
-                    //$url = route('filament.pages.compare', ['recordIds' => implode(',', $recordIds)]);
-                    //return redirect($url);
                     $selectedIds = $records->pluck('id')->toArray();
-                    //$selectedIdsString = implode(',', $selectedIds);
-                    session(['bulkActionData' => $selectedIds]);
-                    return redirect()->route('filament.admin.pages.compare');
-                    //session()->flash('selectedRecords', $records);
-                    //return redirect()->route('filament.pages.compare');
+                    $selectedIdsString = implode(',', $selectedIds);
+                    return redirect()->route('filament.pages.compare', ['ids' => $selectedIdsString]);
                 })
-                ->label('View Selected')
+                ->label('Compare Selected')
                 ->color('primary')
                 ->deselectRecordsAfterCompletion(),
             ]);

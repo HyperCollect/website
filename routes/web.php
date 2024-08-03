@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\Pages\Compare;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Controller;
@@ -30,4 +31,4 @@ Route::get('/download/{file}', function ($file) {
     return response()->json(['message' => 'File not found!'], 404);
 });
 
-Route::get('/compare/{ids}', [Controller::class, 'show'])->name('filament.pages.compare');
+Route::get('/compare/{ids}', Compare::class)->name('filament.pages.compare');
