@@ -103,6 +103,11 @@ server {
 }
 ```
 
+Depending on the architecture of your machine, you have to modify the env file to build the sys.so image
+```bash
+DOCKER_PLATFORM="linux/amd64"
+```
+
 To start or stop the docker compose with:
 ```bash
 docker compose up -d (start in background)

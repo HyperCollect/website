@@ -192,6 +192,12 @@ button:hover {
     
     <button class="button" onclick="goTo()" target="_blank">Cite us!</button>
     </div>
+    <!-- <div id="content"></div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+    document.getElementById('content').innerHTML =
+        marked.parse('# Marked in the browser\n\nRendered by **marked**.\n\n## hello\n');
+    </script> -->
 </section>
 
 <script>

@@ -1,4 +1,6 @@
-FROM php:8.2-fpm
+ARG platform="linux/amd64"
+
+FROM --platform=${platform} php:8.2-fpm
 
 # Arguments defined in docker-compose.yml
 ARG user
