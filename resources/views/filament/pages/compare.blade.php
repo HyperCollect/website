@@ -503,6 +503,8 @@ $id = uniqid();
               responsive: true,
             });
             </script>
+            <iframe
+            src="http://127.0.0.1:8000/index.html" width="100%" height="100%"></iframe>
 
     </div>
 </x-filament-panels::page>
