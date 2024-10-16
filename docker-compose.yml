@@ -18,6 +18,18 @@ services:
        - sail
      depends_on:
        - postgres
+    jupyter-lite:
+      build:
+        context: .
+        dockerfile: ./docker/jupyterlite/Dockerfile
+      container_name: jupyterlite-server
+      restart: unless-stopped
+      volumes:
+        - ./jupyterlite:/app
+      ports:
+        - 8080:8000
+      networks:
+        - sail
     nginx:
       image: nginx:1.25-alpine
       container_name: hgraph-nginx
