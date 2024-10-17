@@ -66,9 +66,7 @@ RUN python3 -m pip install --user julia --break-system-packages
 RUN python3 -c "exec(\"import julia\njulia.install()\")"
 RUN julia -e "using Pkg; Pkg.add(\"SimpleHypergraphs\"); Pkg.add(\"Suppressor\")"
 
-RUN python3 -m pip install jupyterlite-pyodide-kernel --break-system-packages
 
 WORKDIR /sysimage
 RUN python3 -m julia.sysimage sys.so
 
-EXPOSE 8000
