@@ -101,6 +101,11 @@ server {
 }
 ```
 
+Depending on the architecture of your machine, you have to modify the env file to build the sys.so image
+```bash
+DOCKER_PLATFORM="linux/amd64"
+```
+
 To start or stop the docker compose with:
 ```bash
 docker compose up -d (start in background)
@@ -111,7 +116,7 @@ After the dockers are up, you can run the migration to initialize the database a
 docker exec -it hgraph php artisan migrate:fresh
 docker exec -it hgraph bash
 ```
-Then, while in the hgraph docker (in the folder var/www), you have to copy (or move) the custom julia image to the scripts folder
+Then, while in the hgraph docker (in the folder var/www), you have to copy (or move) the custom julia image to the scripts folder then
 ```bash
 cp ../../../sysimage/sys.so scripts/
 python3 scripts/updateDB.py

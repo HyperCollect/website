@@ -24,4 +24,4 @@ sys.so
 certbot/
 psql/
 debugbar/
-```
+jupyterlite/

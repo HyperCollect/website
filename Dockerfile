@@ -1,5 +1,6 @@
-FROM php:8.2-fpm
+ARG platform="linux/amd64"
 
+FROM --platform=${platform} php:8.2-fpm
 # Arguments defined in docker-compose.yml
 ARG user
 ARG uid
@@ -65,7 +66,6 @@ USER $user
 RUN python3 -m pip install --user julia --break-system-packages
 RUN python3 -c "exec(\"import julia\njulia.install()\")"
 RUN julia -e "using Pkg; Pkg.add(\"SimpleHypergraphs\"); Pkg.add(\"Suppressor\")"
-
 
 WORKDIR /sysimage
 RUN python3 -m julia.sysimage sys.so

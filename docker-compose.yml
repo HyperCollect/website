@@ -4,6 +4,7 @@ services:
        args:
          user: isis
          uid: 1000
+         platform: ${DOCKER_PLATFORM}
        context: ./
        dockerfile: Dockerfile
      image: hgraph
@@ -27,7 +28,7 @@ services:
       volumes:
         - ./jupyterlite:/app
       ports:
-        - 8080:8000
+        - 8080:8888
       networks:
         - sail
     nginx:
