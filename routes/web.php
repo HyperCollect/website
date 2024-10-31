@@ -32,3 +32,5 @@ Route::get('/download/{file}', function ($file) {
 });
 
 Route::get('/compare/{ids}', Compare::class)->name('filament.pages.compare');
+
+Route::get('jupyter/view', [Controller::class, 'view'])->name('jupyter.view');
