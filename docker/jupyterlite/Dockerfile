@@ -22,4 +22,4 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
 
 RUN jupyter notebook --generate-config
 RUN echo "c.NotebookApp.tornado_settings={'headers': {'Content-Security-Policy': \"frame-ancestors * 'self' \"}}" >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
-CMD ["jupyter", "notebook", "--NotebookApp.token=''","--NotebookApp.password=''"]
+CMD ["jupyter", "notebook", "--NotebookApp.token=''","--NotebookApp.password=''", "--ServerApp.root_dir=/home/jovyan/work"]
