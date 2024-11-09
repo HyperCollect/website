@@ -27,7 +27,7 @@ services:
       container_name: jupyterlite-server
       restart: unless-stopped
       volumes:
-        - ./storage/app/public/notebooks:/home/jovyan/work
+        - ./storage/app/public/notebooks:/home/jovyan/work:ro
       ports:
         - 8080:8888
       networks:
