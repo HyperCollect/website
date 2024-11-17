@@ -47,7 +47,7 @@ class JupyterNotebookResource extends Resource
                     ->color('primary')
                     ->url('#')
                     ->extraAttributes(fn($record) => [
-                        'data-url' => route('jupyter.view', ['path' => $record->path])
+                        'data-url' => asset('http://localhost:8080/notebooks/' . $record->name)
                     ]),
             ])
             ->headerActions([

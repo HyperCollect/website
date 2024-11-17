@@ -1,22 +1,30 @@
 <x-filament::page>
-    <div id="iframe-div" style="width: 100%; height: 100vh; margin: 0; padding: 0; overflow: hidden;">
-        <iframe id="jupyter-iframe" src="" frameborder="0" style="width: 100%; height: 100%; border: none;"></iframe>
+    <div id="iframe-div" style="display: none">
+        <iframe id="jupyter-iframe" src=""></iframe>
     </div>
 
     {{$this->table}}
     <script>
-        /*function updateIframe(url){
-            console.log(url);
-
-            //document.getElementById('jupyter-iframe')
-        }*/
-
         document.addEventListener('click', function (event) {
-            if (event.target.matches('[data-url]')) {
+            const button = event.target.closest('[data-url]');
+            if(button){
                 event.preventDefault();
-                const url = event.target.getAttribute('data-url');
-                console.log("Updating iframe with URL:", url);
-                document.getElementById('jupyter-iframe').src = url;
+                const url = button.getAttribute('data-url');
+                let iframe = document.getElementById('jupyter-iframe');
+                let iframe_div = document.getElementById('iframe-div');
+
+                iframe_div.style.width = "100%";
+                iframe_div.style.height = "100vh";
+                iframe_div.style.margin = "0";
+                iframe_div.style.padding = "0";
+                iframe_div.style.overflow = "hidden";
+                iframe_div.style.display = "block";
+
+                iframe.src = url;
+                iframe.frameborder = "0";
+                iframe.style.width = "100%";
+                iframe.style.height = "100%";
+                iframe.style.border = "none";
             }
         });
     </script>
