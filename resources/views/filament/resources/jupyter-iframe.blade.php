@@ -1,4 +1,12 @@
 <x-filament::page>
+   <div style="padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #faebcc;
+        border-radius: 10px;
+        background-color: #fcf8e3;
+        color: #8a6d3b;">
+        <strong>Warning!</strong> Example files can be edited but changes cannot be saved.
+    </div>
     <div id="iframe-div" style="display: none">
         <iframe id="jupyter-iframe" src=""></iframe>
     </div>
