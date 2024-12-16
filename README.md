@@ -177,3 +177,11 @@ You can also add a cron job to renew the certificate automatically:
 ```bash
 @monthly docker compose -f /path-to-your-project/docker-compose.yml run --rm certbot renew
 ```
+# Jupyter Notebook
+
+To add your Notebook files simply place them in the following project folder: 
+```
+/storage/app/public/notebooks/
+```
+
+Also, it is important to know that Jupyter Notebook files cannot be edited or created through the web page.
