@@ -55,28 +55,32 @@ const zoomOptions_{{$id}} = {
 </script>
 <script>
 const yValues_{{$id}} = [{{ $getState() }}];
-// const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
-const a{{$id}} = yValues_{{$id}}[0]
+let b{{$id}} = [];
 
-// convert object to array
-const k{{$id}} = Object.keys(a{{$id}})//.map((key) => [Number(key), a[key]]);
-const v{{$id}} = Object.values(a{{$id}})//.map((key) => [Number(key), a[key]]);
+for(let i = 0; i < yValues_{{$id}}.length; i++){
+    // const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
+    const a{{$id}} = yValues_{{$id}}[i];
 
-const b{{$id}} = k{{$id}}.map((key, index) => {
-    return {x: k{{$id}}[index], y: v{{$id}}[index]}
-})
+    // convert object to array
+    const k{{$id}} = Object.keys(a{{$id}});//.map((key) => [Number(key), a[key]]);
+    const v{{$id}} = Object.values(a{{$id}});//.map((key) => [Number(key), a[key]]);
+
+    b{{$id}}[i] = {
+        label: 'Hedges size distribution n° ' + String(i),
+        data: k{{$id}}.map((key, index) => {
+            return {x: k{{$id}}[index], y: v{{$id}}[index]}
+        }),
+        spanGaps: true,
+        pointRadius: 0,
+        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+    }
+}
 
 var chart_{{$id}} = new Chart("{{$id}}", {
   type: "bar",
   data: {
     // labels: xValues_{{$id}},
-    datasets: [{
-      label: 'Hedges size distribution',
-      data: b{{$id}},
-      spanGaps: true,
-      pointRadius: 0,
-      backgroundColor: 'rgba(255, 0, 0, 0.5)',
-    }]
+    datasets: b{{$id}},
   },
   options: {
     scales: {

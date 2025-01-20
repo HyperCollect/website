@@ -1,4 +1,4 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -127,26 +127,32 @@ function topRightAlert(title) {
 
 <script>
 const yValues_{{$id}} = [{{ $getState() }}];
+let b{{$id}} = [];
+
+for(let i = 0; i < yValues_{{$id}}.length; i++){
+    const a{{$id}} = yValues_{{$id}}[i];
+
+    //Convert objetct to array
+    const k{{$id}} = Object.keys(a{{$id}})//.map((key) => [Number(key), a[key]]);
+    const v{{$id}} = Object.values(a{{$id}})//.map((key) => [Number(key), a[key]]);
+
+    b{{$id}}[i] = {
+        label: 'Node degree distribution ' + String(i),
+        data: k{{$id}}.map((key, index) => {
+                return {x: k{{$id}}[index], y: v{{$id}}[index]}
+            }),
+        spanGaps: true,
+        pointRadius: 0,
+    };
+}
 // const xValues_{{$id}} = new Array(yValues_{{$id}}.length).fill(1).map( (_, i) => i+1 )
-const a{{$id}} = yValues_{{$id}}[0]
 
 // convert object to array
-const k{{$id}} = Object.keys(a{{$id}})//.map((key) => [Number(key), a[key]]);
-const v{{$id}} = Object.values(a{{$id}})//.map((key) => [Number(key), a[key]]);
-
-const b{{$id}} = k{{$id}}.map((key, index) => {
-    return {x: k{{$id}}[index], y: v{{$id}}[index]}
-})
 var chart_{{$id}} = new Chart("{{$id}}", {
   type: "bar",
   data: {
     // labels: xValues_{{$id}},
-    datasets: [{
-      label: 'Node degree distribution',
-      data: b{{$id}},
-      spanGaps: true,
-      pointRadius: 0,
-    },
+    datasets: b{{$id}},
     // {
     //   label: 'Node degree distribution',
     //   data: b{{$id}},
@@ -154,7 +160,6 @@ var chart_{{$id}} = new Chart("{{$id}}", {
     //   pointRadius: 0,
     //   type: 'line',
     // },
-  ]
   },
   options: {
     scales: {

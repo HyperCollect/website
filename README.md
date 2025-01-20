@@ -118,7 +118,7 @@ After the dockers are up, you can run the migration to initialize the database a
 docker exec -it hgraph php artisan migrate:fresh
 docker exec -it hgraph bash
 ```
-Then, while in the hgraph docker (in the folder var/www), you have to copy (or move) the custom julia image to the scripts folder
+Then, while in the hgraph docker (in the folder var/www), you have to copy (or move) the custom julia image to the scripts folder then
 ```bash
 cp ../../../sysimage/sys.so scripts/
 python3 scripts/updateDB.py
@@ -179,3 +179,11 @@ You can also add a cron job to renew the certificate automatically:
 ```bash
 @monthly docker compose -f /path-to-your-project/docker-compose.yml run --rm certbot renew
 ```
+# Jupyter Notebook
+
+To add your Notebook files simply place them in the following project folder: 
+```
+/storage/app/public/notebooks/
+```
+
+Also, it is important to know that Jupyter Notebook files cannot be edited or created through the web page.

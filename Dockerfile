@@ -1,7 +1,6 @@
 ARG platform="linux/amd64"
 
 FROM --platform=${platform} php:8.2-fpm
-
 # Arguments defined in docker-compose.yml
 ARG user
 ARG uid
@@ -22,26 +21,26 @@ RUN apt-get update && apt-get install -y \
 
 # MoCHy dependencies
 RUN apt-get --yes -qq install \
-                      bzip2 \
-                      cmake \
-                      cpio \
-                      curl \
-                      g++ \
-                      gcc \
-                      gfortran \
-                      git \
-                      gosu \
-                      libblas-dev \
-                      liblapack-dev \
-                      libopenmpi-dev \
-                      openmpi-bin \
-                      python3-dev \
-                      python3-pip \
-                      virtualenv \
-                      wget \
-                      zlib1g-dev \
-                      vim       \
-                      htop      
+    bzip2 \
+    cmake \
+    cpio \
+    curl \
+    g++ \
+    gcc \
+    gfortran \
+    git \
+    gosu \
+    libblas-dev \
+    liblapack-dev \
+    libopenmpi-dev \
+    openmpi-bin \
+    python3-dev \
+    python3-pip \
+    virtualenv \
+    wget \
+    zlib1g-dev \
+    vim       \
+    htop
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -70,3 +69,4 @@ RUN julia -e "using Pkg; Pkg.add(\"SimpleHypergraphs\"); Pkg.add(\"Suppressor\")
 
 WORKDIR /sysimage
 RUN python3 -m julia.sysimage sys.so
+

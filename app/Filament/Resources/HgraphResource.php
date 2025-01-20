@@ -171,9 +171,9 @@ class HgraphResource extends Resource
                     //     ->schema([
                     //         Infolists\Components\TextEntry::make('name')
                     //     ]),
-                   
+
                 ])
-               
+
                 // Infolists\Components\TextEntry::make('email'),
                 // Infolists\Components\TextEntry::make('notes')
                 //     ->columnSpanFull(),
@@ -219,7 +219,7 @@ class HgraphResource extends Resource
                     ->label('|E|')
                     ->searchable()
                     ->sortable()
-                    ->alignment(Alignment::End),                    
+                    ->alignment(Alignment::End),
                 Tables\Columns\TextColumn::make('dnodemax')
                     ->size(TextColumn\TextColumnSize::Large)
                     ->numeric()
@@ -388,9 +388,15 @@ class HgraphResource extends Resource
                                 })
             ])
             ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
-                // ]),
+                Tables\Actions\BulkAction::make('viewSelected')
+                ->action(function ($records){
+                    $selectedIds = $records->pluck('id')->toArray();
+                    $selectedIdsString = implode(',', $selectedIds);
+                    return redirect()->route('filament.pages.compare', ['ids' => $selectedIdsString]);
+                })
+                ->label('Compare Selected')
+                ->color('primary')
+                ->deselectRecordsAfterCompletion(),
             ]);
     }
 

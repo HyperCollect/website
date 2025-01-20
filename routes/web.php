@@ -1,7 +1,9 @@
 <?php
 
+use App\Filament\Pages\Compare;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Controller;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,3 +31,6 @@ Route::get('/download/{file}', function ($file) {
     return response()->json(['message' => 'File not found!'], 404);
 });
 
+Route::get('/compare/{ids}', Compare::class)->name('filament.pages.compare');
+
+Route::get('jupyter/view', [Controller::class, 'view'])->name('jupyter.view');
