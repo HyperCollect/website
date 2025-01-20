@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/hello', function () { # link/api/hello
+    return response()->json(['message' => 'Hello World!'], 200);
+});
+
+# api to download a file with a specific name #/api/download/{name}
+Route::get('/download/{name}', function ($name) {
+    $path = storage_path('/app/public/datasets/' . $name . '/' . $name . '.hgf');
+    if (!file_exists($path)) {
+        return response()->json(['message' => 'File not found!'], 404);
+    }
+    return response()->download($path);
+});

@@ -176,7 +176,20 @@ for filename in os.listdir(datasets):
             distribution_node_degree = ",".join(str(x) for x in distribution_node_degree)
             distribution_edge_size.sort(reverse=True)
             distribution_edge_size = ",".join(str(x) for x in distribution_edge_size)
-            summary = "test summary"
+            summary = "placeholder summary"
+            # put summary in the tooltip
+            if os.path.isfile(descr):
+                read_s = open(descr, "r").read()
+                r_s = read_s.split("\n")
+                summary = ""
+                for line in r_s[1:]:
+                    if line == "":
+                        continue
+                    if line == "## Source":
+                        break
+                    else:
+                        summary += line                
+
             add_hgraph= ("INSERT INTO hgraphs (id, name, summary, domain, author, authorurl, nodes, edges, dnodemax, dedgemax, dnodeavg, dedgeavg, dnodes, dedges, dedgeshist, dnodeshist, dnodemedian, dedgemedian, url, description, created_at, updated_at)"
                             " VALUES ('"+str(myuuid)+"', '"+str(filename)+"','" + str(summary) + "','" + str(domain) + "','" + author + "','" + author_url + "','" + str(nodes) + "','" + str(edges) + "','" + str(node_degree_max) + "','" + str(edge_degree_max) + "','" + str(avg_node_degree) + "','" + str(avg_edge_degree) + "','" + str(distribution_node_degree) + "','" + str(distribution_edge_size) + "','" + str(distribution_edge_size_hist) + "','" + str(distribution_node_degree_hist) + "','" + str(dnodemedian) +"', '" + str(dedgemedian) +"', '" + url + "', '" + str(descr) + "','"+str(created_at)+"', '"+str(update_at)+"')")
             cursor.execute(add_hgraph)
@@ -230,6 +243,25 @@ for filename in os.listdir(datasets):
                     if str(db_row_UpdatedAt) < str(date):
                         if str(new_date) < str(date):
                             new_date = date
+                            descr = "./storage/app/public/datasets/" + filename + "/README.md"
+                            summary = "placeholder"
+                            # put summary in the tooltip
+                            if os.path.isfile(descr):
+                                read_s = open(descr, "r").read()
+                                r_s = read_s.split("\n")
+                                summary = ""
+                                # save the summary between ## Info and ## Source
+                                for line in r_s[1:]:
+                                    if line == "":
+                                        continue
+                                    if "**source**" in line or "**Source**" in line or line.startswith("##"):
+                                        break
+                                    else:
+                                        summary += line
+                                cursor = cnx.cursor()
+                                update_hgraph = ("UPDATE hgraphs SET summary = '"+str(summary)+"' WHERE name = '"+str(filename)+"'")
+                                cursor.execute(update_hgraph)
+                                cnx.commit()  
 
                 if files.endswith(".info"):
                     apiCall = "https://api.github.com/repos/HypergraphRepository/datasets/commits?path=" + filename + "/categories.info"

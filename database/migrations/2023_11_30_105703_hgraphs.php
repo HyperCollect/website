@@ -34,6 +34,7 @@ return new class extends Migration
             $table->longText('motifsdist')->unsigned()->nullable();
             $table->float('dnodemedian')->unsigned()->nullable();
             $table->float('dedgemedian')->unsigned()->nullable();
+            $table->integer('downloads')->unsigned()->default(0);
             $table->timestamps();
         });
     }
