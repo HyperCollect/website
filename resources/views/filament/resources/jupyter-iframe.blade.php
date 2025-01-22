@@ -6,6 +6,7 @@
         background-color: #fcf8e3;
         color: #8a6d3b;">
         <strong>Warning!</strong> Example files can be edited but changes cannot be saved.
+        <br><strong> Work in progress</strong>
     </div>
     <div id="iframe-div" style="display: none">
         <iframe id="jupyter-iframe" src=""></iframe>

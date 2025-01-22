@@ -20,7 +20,19 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     julia -e 'import Pkg; Pkg.add("IJulia"); using IJulia' && \
     fix-permissions /home/$NB_USER
 
+
 RUN jupyter notebook --generate-config
+ 
 RUN echo "c.NotebookApp.tornado_settings={'headers': {'Content-Security-Policy': \"frame-ancestors * 'self' \"}}" >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.allow_origin = '*'" >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.open_browser = False " >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.allow_remote_access = True " >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.trust_xheaders = True " >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.quit_button = False" >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.ip = '0.0.0.0'" >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+RUN echo "c.NotebookApp.base_url = '/notebooks/'" >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+
 RUN chmod -R a-w /home/jovyan/work
-CMD ["jupyter", "notebook", "--NotebookApp.token=''","--NotebookApp.password=''", "--ServerApp.root_dir=/home/jovyan/work"]
+
+EXPOSE 8888
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token='abc123!'", "--ServerApp.root_dir=/home/jovyan/work"]

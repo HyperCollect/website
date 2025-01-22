@@ -47,7 +47,7 @@ class JupyterNotebookResource extends Resource
                     ->color('primary')
                     ->url('#')
                     ->extraAttributes(fn($record) => [
-                        'data-url' => asset('https://hypergraphrepository.di.unisa.it:8888/notebooks/' . $record->name)
+                        'data-url' => asset('https://hypergraphrepository.di.unisa.it/notebooks/notebooks/' . $record->name . '?token=abc123!')
                     ]),
             ])
             ->headerActions([
